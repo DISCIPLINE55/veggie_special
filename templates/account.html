@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - Veggie Fresh Groceries</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <span class="logo-icon">🥬</span> Veggie
+        </div>
+        <div class="search-container">
+          <form class="search-form">
+            <input type="search" placeholder="Search for vegetables, fruits, herbs..." class="search-input">
+            <button type="submit" class="search-button">🔍</button>
+          </form>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/blog">Blog</a></li>
+        </ul>
+        <div class="user-actions">
+          <div class="user-account">
+            <a href="/account" id="account-button" class="active">👤 Account</a>
+          </div>
+          <div class="cart-icon" id="cart-button">
+            🛒 <span class="cart-count">0</span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Search Bar (for responsive design) -->
+  <div class="mobile-search-container">
+    <form class="mobile-search-form">
+      <input type="search" placeholder="Search products..." class="mobile-search-input">
+      <button type="submit" class="mobile-search-button">🔍</button>
+    </form>
+  </div>
+
+  <!-- Account Page -->
+  <main class="account-container">
+    <div class="account-header">
+      <h1>My Account</h1>
+      <p>Manage your profile, orders, subscriptions, and preferences</p>
+    </div>
+
+    <div class="account-tabs">
+      <button class="tab-button active" data-tab="profile">Profile</button>
+      <button class="tab-button" data-tab="orders">Order History</button>
+      <button class="tab-button" data-tab="wishlist">Wishlist</button>
+      <button class="tab-button" data-tab="subscriptions">Subscriptions</button>
+      <button class="tab-button" data-tab="settings">Settings</button>
+    </div>
+
+    <!-- Profile Tab -->
+    <div id="profile" class="tab-content active">
+      <form class="account-form">
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">First Name</label>
+              <input type="text" class="form-control" id="first-name" value="John" required>
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name</label>
+              <input type="text" class="form-control" id="last-name" value="Doe" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" value="john.doe@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" value="(555) 123-4567" required>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Delivery Address</h3>
+          <div class="form-group">
+            <label for="address">Street Address</label>
+            <input type="text" class="form-control" id="address" value="123 Main St" required>
+          </div>
+          <div class="form-group">
+            <label for="apartment">Apartment, suite, etc. (optional)</label>
+            <input type="text" class="form-control" id="apartment" value="Apt 4B">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" class="form-control" id="city" value="Accra" required>
+            </div>
+            <div class="form-group">
+              <label for="state">Region</label>
+              <select class="form-control" id="state" required>
+                <option value="">Select Region</option>
+                <option value="Greater Accra" selected>Greater Accra</option>
+                <option value="Ashanti">Ashanti</option>
+                <option value="Western">Western</option>
+                <option value="Eastern">Eastern</option>
+                <option value="Central">Central</option>
+                <option value="Volta">Volta</option>
+                <option value="Northern">Northern</option>
+                <option value="Upper East">Upper East</option>
+                <option value="Upper West">Upper West</option>
+                <option value="Bono">Bono</option>
+                <option value="Bono East">Bono East</option>
+                <option value="Ahafo">Ahafo</option>
+                <option value="Western North">Western North</option>
+                <option value="Oti">Oti</option>
+                <option value="North East">North East</option>
+                <option value="Savannah">Savannah</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="zip">Zip Code</label>
+              <input type="text" class="form-control" id="zip" value="00233" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Change Password</h3>
+          <div class="form-group">
+            <label for="current-password">Current Password</label>
+            <input type="password" class="form-control" id="current-password">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-password">New Password</label>
+              <input type="password" class="form-control" id="new-password">
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm New Password</label>
+              <input type="password" class="form-control" id="confirm-password">
+            </div>
+          </div>
+        </div>
+
+        <div class="account-actions">
+          <button type="button" class="delete-btn">Delete Account</button>
+          <div>
+            <button type="button" class="cancel-btn">Cancel</button>
+            <button type="submit" class="save-btn">Save Changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">Purchase History</h2>
+        <div class="dashboard-controls">
+          <select class="time-range" id="timeRange">
+            <option value="1month">Last Month</option>
+            <option value="3months" selected>Last 3 Months</option>
+            <option value="6months">Last 6 Months</option>
+            <option value="1year">Last Year</option>
+          </select>
+          <div class="view-toggle">
+            <button class="active" data-view="overview">Overview</button>
+            <button data-view="spending">Spending</button>
+            <button data-view="transactions">Transactions</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stats-summary">
+        <div class="stat-card">
+          <p class="stat-label">Total Spent</p>
+          <p class="stat-value total-spent" id="totalSpent">$103.60</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Orders Placed</p>
+          <p class="stat-value orders-count" id="ordersCount">5</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Avg. Order Value</p>
+          <p class="stat-value avg-order" id="avgOrder">$20.72</p>
+        </div>
+      </div>
+      
+      <!-- Overview Tab -->
+      <div id="overviewTab" class="tab-content active">
+        <div class="overview-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">Spending by Category</h3>
+            <div class="chart-container">
+              <div class="pie-chart" id="categoryPieChart">
+                <!-- Pie slices will be added by JavaScript -->
+              </div>
+              <div class="pie-legend" id="pieLegend">
+                <!-- Legend items will be added by JavaScript -->
+              </div>
+            </div>
+          </div>
+          <div class="recent-orders-card">
+            <h3 class="recent-orders-title">Recent Orders</h3>
+            <div id="recentOrdersList">
+              <!-- Order items will be added by JavaScript -->
+            </div>
+            <a href="#" class="view-all-btn">View All Orders</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Spending Tab -->
+      <div id="spendingTab" class="tab-content">
+        <div class="chart-card">
+          <h3 class="chart-title">Monthly Spending</h3>
+          <div class="bar-chart-container">
+            <div class="chart-y-axis" id="yAxis">
+              <!-- Y-axis labels will be added by JavaScript -->
+            </div>
+            <div class="bar-chart" id="monthlyBarChart">
+              <!-- Bars will be added by JavaScript -->
+            </div>
+            <div class="chart-x-axis" id="xAxis">
+              <!-- X-axis labels will be added by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Transactions Tab -->
+      <div id="transactionsTab" class="tab-content">
+        <div class="transactions-table-container">
+          <table class="transactions-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsTableBody">
+              <!-- Transaction rows will be added by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <div class="pagination-info">Showing 5 of 5 orders</div>
+          <div class="pagination-controls">
+            <button class="pagination-btn">←</button>
+            <span class="pagination-text">Page 1 of 1</span>
+            <button class="pagination-btn">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Subscriptions Tab -->
+    <div id="subscriptions" class="tab-content">
+      <div class="subscriptions-header">
+        <h2>Your Subscription Boxes</h2>
+        <p>Manage your recurring deliveries and customize your boxes</p>
+      </div>
+      
+      <div class="active-subscriptions">
+        <div class="subscription-card">
+          <div class="subscription-header">
+            <h3>Weekly Veggie Box - Small</h3>
+            <span class="subscription-status active">Active</span>
+          </div>
+          <div class="subscription-details">
+            <div class="subscription-image">
+              <img src="/api/placeholder/150/120" alt="Weekly Veggie Box">
+            </div>
+            <div class="subscription-info">
+              <div class="subscription-schedule">
+                <strong>Delivery Schedule:</strong> Every Tuesday
+              </div>
+              <div class="subscription-price">
+                <strong>Price:</strong> $24.99 per delivery
+              </div>
+              <div class="subscription-next-delivery">
+                <strong>Next Delivery:</strong> May 6, 2025
+              </div>
+              <div class="subscription-address">
+                <strong>Delivery Address:</strong> 123 Main St, Apt 4B, Accra
+              </div>
+            </div>
+          </div>
+          <div class="subscription-customization">
+            <div class="customize-options">
+              <h4>Box Contents:</h4>
+              <ul class="subscription-items">
+                <li>Seasonal Vegetables (curated by our team)</li>
+                <li>2 Fruit Items (based on availability)</li>
+                <li>1 Herb Bundle</li>
+              </ul>
+            </div>
+            <div class="subscription-preferences">
+              <h4>Your Preferences:</h4>
+              <div class="preference-item">
+                <span>No Cilantro</span>
+                <span>No Eggplant</span>
+              </div>
+            </div>
+          </div>
+          <div class="subscription-actions">
+            <button class="customize-btn">Customize Box</button>
+            <button class="skip-delivery-btn">Skip Next Delivery</button>
+            <button class="cancel-subscription-btn">Cancel Subscription</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="available-subscriptions">
+        <h3>Available Subscription Plans</h3>
+        <div class="subscription-options">
+          <div class="subscription-option">
+            <div class="option-image">
+              <img src="/api/placeholder/150/120" alt="Medium Veggie Box">
+            </div>
+            <div class="option-details">
+              <h4>Weekly Veggie Box - Medium</h4>
+              <p>Perfect for couples or small families. Contains 8-10 organic seasonal items.</p>
+              <div class="option-price">$34.99 / week</div>
+              <button class="subscribe-btn">Subscribe</button>
+            </div>
+          </div>
+          
+          <div class="subscription-option">
+            <div class="option-image">
+              <img src="/api/placeholder/150/120" alt="Large Veggie Box">
+            </div>
+            <div class="option-details">
+              <h4>Weekly Veggie Box - Large</h4>
+              <p>Designed for families. Contains 12-15 organic seasonal items.</p>
+              <div class="option-price">$49.99 / week</div>
+              <button class="subscribe-btn">Subscribe</button>
+            </div>
+          </div>
+          
+          <div class="subscription-option">
+            <div class="option-image">
+              <img src="/api/placeholder/150/120" alt="Fruit Only Box">
+            </div>
+            <div class="option-details">
+              <h4>Fruit Only Box</h4>
+              <p>A selection of 6-8 seasonal fruits, perfect for snacking and desserts.</p>
+              <div class="option-price">$29.99 / week</div>
+              <button class="subscribe-btn">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Settings Tab -->
+    <div id="settings" class="tab-content">
+      <div class="settings-section">
+        <h3>Notification Preferences</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>Order Updates</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="order-updates" checked>
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
+            <p class="setting-description">Receive notifications about your order status and delivery updates</p>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>Promotional Emails</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="promotional-emails" checked>
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
+            <p class="setting-description">Get updates about new products, special offers, and discounts</p>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>Weekly Newsletter</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="newsletter">
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
+            <p class="setting-description">Receive our weekly newsletter with recipes, tips, and farm updates</p>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>SMS Notifications</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="sms-notifications" checked>
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
+            <p class="setting-description">Get text message alerts about your deliveries and order status</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h3>Payment Methods</h3>
+        <div class="payment-methods">
+          <div class="payment-method">
+            <div class="payment-icon">💳</div>
+            <div class="payment-details">
+              <div class="payment-name">Visa ending in 4567</div>
+              <div class="payment-expiry">Expires: 09/27</div>
+            </div>
+            <div class="payment-actions">
+              <span class="default-badge">Default</span>
+              <button class="edit-payment-btn">Edit</button>
+              <button class="remove-payment-btn">Remove</button>
+            </div>
+          </div>
+          
+          <div class="payment-method">
+            <div class="payment-icon">💳</div>
+            <div class="payment-details">
+              <div class="payment-name">Mastercard ending in 8912</div>
+              <div class="payment-expiry">Expires: 12/26</div>
+            </div>
+            <div class="payment-actions">
+              <button class="set-default-btn">Set as Default</button>
+              <button class="edit-payment-btn">Edit</button>
+              <button class="remove-payment-btn">Remove</button>
+            </div>
+          </div>
+          
+          <div class="payment-method">
+            <div class="payment-icon">📱</div>
+            <div class="payment-details">
+              <div class="payment-name">Mobile Money</div>
+              <div class="payment-number">+233 55 123 4567</div>
+            </div>
+            <div class="payment-actions">
+              <button class="set-default-btn">Set as Default</button>
+              <button class="edit-payment-btn">Edit</button>
+              <button class="remove-payment-btn">Remove</button>
+            </div>
+          </div>
+        </div>
+        
+        <button class="add-payment-btn">Add Payment Method</button>
+      </div>
+      
+      <div class="settings-section">
+        <h3>Delivery Preferences</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label for="preferred-time" class="setting-label">Preferred Delivery Time</label>
+            <select id="preferred-time" class="settings-select">
+              <option value="morning">Morning (8am - 12pm)</option>
+              <option value="afternoon" selected>Afternoon (12pm - 5pm)</option>
+              <option value="evening">Evening (5pm - 8pm)</option>
+            </select>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>Delivery Instructions</span>
+              <textarea class="delivery-instructions" placeholder="Add special instructions for delivery...">Leave with security if not at home.</textarea>
+            </label>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>Contactless Delivery</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="contactless-delivery" checked>
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
+            <p class="setting-description">Driver will leave your order at the door</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h3>Language & Currency</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label for="language" class="setting-label">Language</label>
+            <select id="language" class="settings-select">
+              <option value="en" selected>English</option>
+              <option value="fr">Français</option>
+              <option value="es">Español</option>
+              <option value="tw">Twi</option>
+            </select>
+          </div>
+          
+          <div class="setting-item">
+            <label for="currency" class="setting-label">Currency</label>
+            <select id="currency" class="settings-select">
+              <option value="usd" selected>USD ($)</option>
+              <option value="ghs">GHS (₵)</option>
+              <option value="eur">EUR (€)</option>
+              <option value="gbp">GBP (£)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="settings-actions">
+        <button type="button" class="reset-settings-btn">Reset to Default</button>
+        <button type="submit" class="save-settings-btn">Save Settings</button>
+      </div>
+    </div>
+  </main>
+
+   <!-- Footer Section -->
+
+<!-- Footer Section -->
+<footer>
+  <div class="container">
+  <div class="footer-content">
+  <div class="footer-column">
+    <div class="footer-logo">
+        <span class="logo-icon">🥬</span> Veggie
+    </div>
+    <p>Your trusted source for fresh groceries and organic products delivered right to your doorstep.</p>
+    <div class="social-links">
+        <a href="#" class="social-link">Facebook</a>
+        <a href="#" class="social-link">Instagram</a>
+        <a href="#" class="social-link">Twitter</a>
+    </div>
+  </div>
+  <div class="footer-column">
+    <h3>Shop</h3>
+    <ul class="footer-links">
+        <li><a href="#">Vegetables</a></li>
+        <li><a href="#">Fruits</a></li>
+        <li><a href="#">Fresh Herbs</a></li>
+        <li><a href="#">Organic Products</a></li>
+        <li><a href="#">Weekly Boxes</a></li>
+        <li><a href="#">Gift Cards</a></li>
+    </ul>
+  </div>
+  <div class="footer-column">
+    <h3>Company</h3>
+    <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Farmers</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+    </ul>
+  </div>
+  <div class="footer-column">
+    <h3>Customer Service</h3>
+    <ul class="footer-links">
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Shipping & Delivery</a></li>
+        <li><a href="#">Return Policy</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="#">Contact Us</a></li>
+    </ul>
+  </div>
+  <div class="footer-column">
+    <h3>Contact Us</h3>
+    <ul class="contact-info">
+        <li><strong>Email:</strong> info@veggie.com</li>
+        <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+        <li><strong>Address:</strong> 123 Veggie Street, Fresh City, FC 12345</li>
+        <li><strong>Hours:</strong> Mon-Fri: 8am-8pm, Sat-Sun: 9am-6pm</li>
+    </ul>
+  </div>
+  </div>
+  <div class="footer-bottom">
+  <div class="payment-methods">
+    <span>We accept:</span>
+    <span class="payment-icon">Visa</span>
+    <span class="payment-icon">Mastercard</span>
+    <span class="payment-icon">American Express</span>
+    <span class="payment-icon">PayPal</span>
+    <span class="payment-icon">Apple Pay</span>
+    <span class="payment-icon">Mobile Money</span>
+  </div>
+  <p class="copyright">&copy; 2025 Veggie. All rights reserved.</p>
+  </div>
+  </div>
+  </footer>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  
+  </body>
+  </html>      

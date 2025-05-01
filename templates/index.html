@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veggie - Fresh Groceries</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<!-- Header Section -->
+<header>
+<div class="container">
+<nav>
+<div class="logo">
+  <span class="logo-icon">🥬</span> Veggie
+</div>
+<div class="search-container">
+  <form class="search-form">
+      <input type="search" placeholder="Search for vegetables, fruits, herbs..." class="search-input">
+      <button type="submit" class="search-button">🔍</button>
+  </form>
+</div>
+<ul class="nav-links">
+  <li><a href="/" class="active">Home</a></li>
+  <li><a href="/products">Products</a></li>
+  <li><a href="/about">About Us</a></li>
+  <li><a href="/contact">Contact</a></li>
+  <li><a href="/blog">Blog</a></li>
+</ul>
+<div class="user-actions">
+  <div class="user-account">
+      <a href="/account">👤 Account</a>
+  </div>
+  <div class="cart-icon" id="cart-button">
+      🛒 <span class="cart-count">0</span>
+  </div>
+</div>
+</nav>
+</div>
+</header>
+
+<!-- Mobile Search Bar (for responsive design) -->
+<div class="mobile-search-container">
+<form class="mobile-search-form">
+<input type="search" placeholder="Search products..." class="mobile-search-input">
+<button type="submit" class="mobile-search-button">🔍</button>
+</form>
+</div>
+
+<section class="hero">
+  <div class="slider">
+    <div class="slides">
+      <img src="{{ url_for('static', filename='images/WhatsApp Image 2024-10-31 at 07.18.03_e6a3b6dc - Copy.jpg') }}" alt="Veggie Subscription Box">
+
+      <img src="{{ url_for('static', filename='images/what1.jpg') }}" alt="Veggie Subscription Box">
+
+      <img src="{{ url_for('static', filename='images/WhatsApp Image 2024-10-31 at 07.18.01_1f79a9d5.jpg') }}" alt="Veggie Subscription Box">
+
+      <img src="{{ url_for('static', filename='images/WhatsApp Image 2024-10-31 at 07.17.59_e4bac3a8.jpg') }}" alt="Veggie Subscription Box">
+     
+      <img src="{{ url_for('static', filename='images/h - Copy (2).jpeg') }}" alt="Veggie Subscription Box">
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <h1>Fresh Groceries Delivered</h1>
+    <p>Shop the freshest vegetables and fruits from local farmers</p>
+    <div class="hero-buttons">
+      <button class="hero-button primary">Shop Now</button>
+      <button class="hero-button secondary">Our Process</button>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">Organic</span>
+      <span class="badge">Farm-to-Table</span>
+      <span class="badge">Free Delivery</span>
+    </div>
+  </div>
+
+  <div id="grocery-list-popup" style="margin-top: 17px;">
+    <ul>
+        <li>Broccoli</li>
+        <li>Pineapple</li>
+        <li>Mango</li>
+        <li>Onion</li>
+        <li>Ginger</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- Featured Categories Section -->
+<section class="container">
+<h2 class="section-title">Shop by Category</h2>
+<div class="categories-container">
+<div class="category-card">
+<div class="category-img vegetables">
+</div>
+<h3>Vegetables</h3>
+<a href="#" class="category-link">Browse All</a>
+</div>
+<div class="category-card">
+<div class="category-img fruits"></div>
+<h3>Fruits</h3>
+<a href="#" class="category-link">Browse All</a>
+</div>
+<div class="category-card">
+<div class="category-img herbs"></div>
+<h3>Fresh Herbs</h3>
+<a href="#" class="category-link">Browse All</a>
+</div>
+<div class="category-card">
+<div class="category-img organic"></div>
+<h3>Organic</h3>
+<a href="#" class="category-link">Browse All</a>
+</div>
+</div>
+</section>
+
+
+<!-- Products Section -->
+<section class="container">
+  <div class="section-header">
+  <h2 class="section-title">Our Fresh Products</h2>
+  <div class="product-search-filter">
+  <div class="search-filter-container">
+    <input type="search" placeholder="Search in products..." class="product-search">
+    <button class="product-search-btn">Search</button>
+  </div>
+  <div class="product-filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="vegetables">Vegetables</button>
+    <button class="filter-btn" data-filter="fruits">Fruits</button>
+    <button class="filter-btn" data-filter="herbs">Herbs</button>
+  </div>
+  </div>
+  </div>
+  <div class="product-container" id="products-container">
+  <!-- Products will be loaded here dynamically -->
+  </div>
+  <div class="view-more-container">
+  <button class="view-more-btn">View More Products</button>
+  </div>
+  </section>
+
+<!-- Value Proposition Section -->
+<section class="value-proposition">
+<div class="container">
+<h2 class="section-title">Why Choose Veggie?</h2>
+<div class="values-container">
+<div class="value-card">
+  <div class="value-icon">🌱</div>
+  <h3>100% Organic</h3>
+  <p>All our products are certified organic, grown without harmful pesticides or chemicals.</p>
+</div>
+<div class="value-card">
+  <div class="value-icon">🚚</div>
+  <h3>Fast Delivery</h3>
+  <p>Same-day delivery for orders placed before noon, or schedule for your convenience.</p>
+</div>
+<div class="value-card">
+  <div class="value-icon">👨‍🌾</div>
+  <h3>Support Local</h3>
+  <p>We partner with over 50 local farms to bring you the freshest seasonal produce.</p>
+</div>
+<div class="value-card">
+  <div class="value-icon">♻️</div>
+  <h3>Eco-Friendly</h3>
+  <p>Sustainable packaging and zero-waste initiatives to protect our planet.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Subscription Box Section -->
+<section class="subscription-box">
+<div class="container">
+<div class="subscription-content">
+<div class="subscription-info">
+  <h2>Weekly Veggie Box</h2>
+  <p>Get a curated box of seasonal produce delivered weekly to your doorstep.</p>
+  <ul class="subscription-features">
+      <li>Customize your box contents</li>
+      <li>Save up to 20% compared to individual purchases</li>
+      <li>Skip or cancel anytime</li>
+      <li>Seasonal recipes included</li>
+  </ul>
+  <button class="subscription-btn">Subscribe Now</button>
+</div>
+<div class="subscription-image">
+  <img src="{{ url_for('static', filename='images/subscription.jpeg') }}" alt="Veggie Subscription Box">
+</div>
+</div>
+</div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+<div class="container">
+<h2 class="section-title">What Our Customers Say</h2>
+<div class="testimonials-container">
+<div class="testimonial-card">
+  <div class="testimonial-rating">★★★★★</div>
+  <p class="testimonial-text">"Veggie has transformed how my family eats. The produce is always fresh and tastes amazing. The weekly box is the highlight of our kitchen!"</p>
+  <div class="testimonial-author">
+      <div class="author-avatar"></div>
+      <div class="author-info">
+          <h4>Sarah Johnson</h4>
+          <p>Loyal Customer - 2 years</p>
+      </div>
+  </div>
+</div>
+<div class="testimonial-card">
+  <div class="testimonial-rating">★★★★★</div>
+  <p class="testimonial-text">"I love knowing exactly where my food comes from. The direct relationship with local farmers makes a huge difference in quality and freshness."</p>
+  <div class="testimonial-author">
+      <div class="author-avatar"></div>
+      <div class="author-info">
+          <h4>Michael Chen</h4>
+          <p>Loyal Customer - 1 year</p>
+      </div>
+  </div>
+</div>
+<div class="testimonial-card">
+  <div class="testimonial-rating">★★★★★</div>
+  <p class="testimonial-text">"The convenience of having organic produce delivered right to my door has been life-changing. Their customer service is exceptional too!"</p>
+  <div class="testimonial-author">
+      <div class="author-avatar"></div>
+      <div class="author-info">
+          <h4>Emily Rodriguez</h4>
+          <p>Loyal Customer - 8 months</p>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Blog Highlights Section -->
+<section class="blog-highlights">
+<div class="container">
+<div class="section-header">
+<h2 class="section-title">From Our Blog</h2>
+<a href="#" class="view-all">View All Posts →</a>
+</div>
+<div class="blog-container">
+<div class="blog-card">
+  <div class="blog-image"></div>
+  <div class="blog-content">
+      <span class="blog-category">Nutrition</span>
+      <h3>Seasonal Eating: Why It Matters</h3>
+      <p>Discover the nutritional benefits of eating produce during its natural growing season.</p>
+      <a href="#" class="read-more">Read More</a>
+  </div>
+</div>
+<div class="blog-card">
+  <div class="blog-image"></div>
+  <div class="blog-content">
+      <span class="blog-category">Farm Stories</span>
+      <h3>Meet Our Farmers: The Wilson Family</h3>
+      <p>Learn about the sustainable farming practices at one of our partner farms.</p>
+      <a href="#" class="read-more">Read More</a>
+  </div>
+</div>
+<div class="blog-card">
+  <div class="blog-image"></div>
+  <div class="blog-content">
+      <span class="blog-category">Recipes</span>
+      <h3>5 Simple Summer Salads</h3>
+      <p>Quick and refreshing salad recipes using seasonal vegetables and herbs.</p>
+      <a href="#" class="read-more">Read More</a>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter">
+<div class="container">
+<div class="newsletter-content">
+<h2>Join Our Community</h2>
+<p>Subscribe to receive weekly recipes, seasonal updates, and exclusive offers.</p>
+<form class="newsletter-form">
+  <input type="email" placeholder="Your email address" required>
+  <button type="submit">Subscribe</button>
+</form>
+<p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+</div>
+</div>
+</section>
+
+
+
+<!-- App Download Section -->
+<section class="app-download">
+  <div class="container">
+    <div class="app-content">
+      <div class="app-info">
+        <h2>Download Our Mobile App</h2>
+        <p>Manage your subscription, track deliveries, and browse products on the go.</p>
+        <div class="app-buttons">
+          <a href="#" class="app-btn app-store">
+            <img src="{{ url_for('static', filename='images/appstore.png') }}" alt="App Store">
+          </a>
+          <a href="#" class="app-btn google-play">
+            <img src="{{ url_for('static', filename='images/googleplay.png') }}" alt="Google Play">
+          </a>
+        </div>
+      </div>
+      <div class="app-image">
+        <img src="{{ url_for('static', filename='images/app.png') }}" alt="Veggie Mobile App">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+ <!--.............contact-section..........-->
+ <section class="location" id="contact us">
+  <h1> Locate Us With Ease</h1>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1016406.4956943382!2d-1.30261225!3d5.66418445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfde34e8ffe3e31b%3A0xa941ede83ba36b5f!2sCentral%20Region!5e0!3m2!1sen!2sgh!4v1723998276442!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+</section>
+
+<!-- Cart Modal -->
+<div id="cart-modal">
+<div class="cart-content">
+<span class="close-cart">&times;</span>
+<h2>Your Shopping Cart</h2>
+<div class="cart-items" id="cart-items">
+<!-- Cart items will be loaded here dynamically -->
+</div>
+<div class="cart-actions">
+<button class="continue-shopping" id="continue-shopping">Continue Shopping</button>
+<button class="empty-cart" id="empty-cart">Empty Cart</button>
+</div>
+<div class="cart-summary">
+<div class="summary-row">
+  <span>Subtotal:</span>
+  <span>$<span id="cart-subtotal">0.00</span></span>
+</div>
+<div class="summary-row">
+  <span>Delivery:</span>
+  <span>$<span id="cart-delivery">0.00</span></span>
+</div>
+<div class="summary-row total">
+  <span>Total:</span>
+  <span>$<span id="cart-total">0.00</span></span>
+</div>
+<div class="promo-code">
+  <input type="text" placeholder="Promo Code">
+  <button>Apply</button>
+</div>
+<button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+</div>
+</div>
+</div>
+
+<!-- Payment Modal -->
+<div id="payment-modal">
+<div class="payment-content">
+<span class="close-payment">&times;</span>
+<h2>Checkout</h2>
+<div class="checkout-progress">
+<div class="progress-step active">
+  <span class="step-number">1</span>
+  <span class="step-name">Information</span>
+</div>
+<div class="progress-step">
+  <span class="step-number">2</span>
+  <span class="step-name">Shipping</span>
+</div>
+<div class="progress-step">
+  <span class="step-number">3</span>
+  <span class="step-name">Payment</span>
+</div>
+</div>
+<form class="payment-form" id="payment-form">
+<div class="form-section">
+  <h3>Contact Information</h3>
+  <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" class="form-control" id="email" placeholder="john@example.com" required>
+  </div>
+  <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="tel" class="form-control" id="phone" placeholder="(555) 123-4567" required>
+  </div>
+</div>
+<div class="form-section">
+  <h3>Delivery Address</h3>
+  <div class="form-row">
+      <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input type="text" class="form-control" id="first-name" required>
+      </div>
+      <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input type="text" class="form-control" id="last-name" required>
+      </div>
+  </div>
+  <div class="form-section">
+    <h3>Location Details</h3>
+    <div class="form-group">
+        <label for="region-type">Location Type</label>
+        <select class="form-control" id="region-type" required>
+            <option value="urban">Urban Area</option>
+            <option value="suburban">Suburban Area</option>
+            <option value="rural">Rural Area</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="delivery-notes">Delivery Instructions (Optional)</label>
+        <textarea class="form-control" id="delivery-notes" placeholder="E.g., Gate code, landmark, or special instructions for delivery"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+      <label for="address">Street Address</label>
+      <input type="text" class="form-control" id="address" placeholder="123 Main St" required>
+  </div>
+  <div class="form-group">
+      <label for="apartment">Apartment, suite, etc. (optional)</label>
+      <input type="text" class="form-control" id="apartment" placeholder="Apt 4B">
+  </div>
+  <div class="form-row">
+      <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city" required>
+      </div>
+
+      
+      <div class="form-group">
+          <label for="state">Region</label>
+          <select class="form-control" id="state" required>
+              <option value="">Select Region</option>
+              <option value="Greater Accra">Greater Accra</option>
+              <option value="Ashanti">Ashanti</option>
+              <option value="Western">Western</option>
+              <option value="Eastern">Eastern</option>
+              <option value="Central">Central</option>
+              <option value="Volta">Volta</option>
+              <option value="Northern">Northern</option>
+              <option value="Upper East">Upper East</option>
+              <option value="Upper West">Upper West</option>
+              <option value="Bono">Bono</option>
+              <option value="Bono East">Bono East</option>
+              <option value="Ahafo">Ahafo</option>
+              <option value="Western North">Western North</option>
+              <option value="Oti">Oti</option>
+              <option value="North East">North East</option>
+              <option value="Savannah">Savannah</option>
+              <option value="Other">Other</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label for="zip">Zip Code</label>
+          <input type="text" class="form-control" id="zip" required>
+      </div>
+  </div>
+</div>
+<div class="form-section">
+  <h3>Delivery Options</h3>
+  <div class="delivery-options">
+      <div class="delivery-option">
+          <input type="radio" id="standard" name="delivery" value="standard" checked>
+          <label for="standard">
+              <div class="option-info">
+                  <span class="option-name">Standard Delivery</span>
+                  <span class="option-description">Delivery within 2-3 business days</span>
+              </div>
+              <span class="option-price">Free</span>
+          </label>
+      </div>
+      <div class="delivery-option">
+          <input type="radio" id="express" name="delivery" value="express">
+          <label for="express">
+              <div class="option-info">
+                  <span class="option-name">Express Delivery</span>
+                  <span class="option-description">Delivery within 24 hours</span>
+              </div>
+              <span class="option-price">$4.99</span>
+          </label>
+      </div>
+  </div>
+</div>
+<div class="form-section">
+  <h3>Payment Method</h3>
+  <div class="payment-methods">
+      <div class="payment-method">
+          <input type="radio" id="credit-card" name="payment-method" value="credit-card" checked>
+          <label for="credit-card">Credit Card</label>
+      </div>
+      <div class="payment-method">
+          <input type="radio" id="paypal" name="payment-method" value="paypal">
+          <label for="paypal">PayPal</label>
+      </div>
+      <div class="payment-method">
+          <input type="radio" id="mobile-money" name="payment-method" value="mobile-money">
+          <label for="mobile-money">Mobile Money</label>
+      </div>
+  </div>
+  <!-- Credit Card Details -->
+  <div class="card-details payment-details" id="credit-card-details">
+      <div class="form-group">
+          <label for="card-number">Card Number</label>
+          <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456" required>
+      </div>
+      <div class="form-row">
+          <div class="form-group">
+              <label for="expiry">Expiration Date</label>
+              <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+          </div>
+          <div class="form-group">
+              <label for="cvv">Security Code</label>
+              <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="card-name">Name on Card</label>
+          <input type="text" class="form-control" id="card-name" required>
+      </div>
+  </div>
+  
+  
+  <!-- Mobile Money Details -->
+  <div class="mobile-money-details payment-details" id="mobile-money-details" style="display: none;">
+      <div class="form-group">
+          <label for="mobile-provider">Mobile Provider</label>
+          <select class="form-control" id="mobile-provider" required>
+              <option value="">Select Provider</option>
+              <option value="mtn">MTN Mobile Money</option>
+              <option value="airtel">Airtel Money</option>
+              <option value="vodafone">Vodafone Cash</option>
+              <option value="orange">Orange Money</option>
+              <option value="tmoney">T-Money</option>
+              <option value="other">Other</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label for="mobile-number">Mobile Number</label>
+          <input type="tel" class="form-control" id="mobile-number" placeholder="+1234567890" required>
+      </div>
+      <div class="form-group">
+          <label for="account-name">Account Name</label>
+          <input type="text" class="form-control" id="account-name" required>
+      </div>
+      <p class="mobile-money-note">You will receive a payment confirmation request on your mobile device to complete the transaction.</p>
+  </div>
+</div>
+<div class="order-summary">
+  <h3>Order Summary</h3>
+  <div class="summary-items" id="summary-items">
+      <!-- Summary items will be loaded here dynamically -->
+  </div>
+  <div class="summary-totals">
+      <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>$<span id="summary-subtotal">0.00</span></span>
+      </div>
+      <div class="summary-row">
+          <span>Delivery:</span>
+          <span>$<span id="summary-delivery">0.00</span></span>
+      </div>
+      <div class="summary-row">
+          <span>Tax:</span>
+          <span>$<span id="summary-tax">0.00</span></span>
+      </div>
+      <div class="summary-row total">
+          <span>Total:</span>
+          <span>$<span id="summary-total">0.00</span></span>
+      </div>
+  </div>
+</div>
+<div class="form-actions">
+  <button type="button" class="back-btn">Return to Cart</button>
+  <button type="submit" class="submit-payment">Complete Order</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receipt-modal">
+<div class="receipt-content">
+<div class="receipt-header">
+<div class="receipt-logo">
+  <span class="logo-icon">🥬</span> Veggie
+</div>
+<h2 class="receipt-title">Order Confirmation</h2>
+<p class="receipt-date" id="receipt-date"></p>
+<p class="order-number">Order #<span id="order-number">12345</span></p>
+</div>
+<div class="receipt-customer">
+<h3>Customer Information</h3>
+<p id="customer-name">John Doe</p>
+<p id="customer-email">john@example.com</p>
+<p id="customer-address">123 Main St, City, State, ZIP</p>
+</div>
+<div class="receipt-delivery">
+<h3>Delivery Information</h3>
+<p id="delivery-method">Standard Delivery</p>
+<p id="delivery-estimate">Estimated delivery: May 3-4, 2025</p>
+</div>
+<div class="receipt-items">
+<h3>Order Items</h3>
+<div id="receipt-items-list">
+  <!-- Receipt items will be loaded here dynamically -->
+</div>
+</div>
+<div class="receipt-summary">
+<div class="summary-row">
+  <span>Subtotal:</span>
+  <span>$<span id="receipt-subtotal">0.00</span></span>
+</div>
+<div class="summary-row">
+  <span>Delivery:</span>
+  <span>$<span id="receipt-delivery">0.00</span></span>
+</div>
+<div class="summary-row">
+  <span>Tax:</span>
+  <span>$<span id="receipt-tax">0.00</span></span>
+</div>
+<div class="summary-row total">
+  <span>Total:</span>
+  <span>$<span id="receipt-total">0.00</span></span>
+</div>
+</div>
+<div class="receipt-message">
+<p>Thank you for shopping with Veggie! Your order has been confirmed and is being processed.</p>
+<p>You will receive an email confirmation shortly.</p>
+</div>
+<div class="receipt-actions">
+<button class="print-receipt" id="print-receipt">Print Receipt</button>
+<button class="email-receipt" id="email-receipt">Email Receipt</button>
+<button class="close-receipt" id="close-receipt">Back to Shopping</button>
+</div>
+</div>
+</div>
+
+<!-- Trust Badges Section -->
+<section class="trust-badges">
+<div class="container">
+<div class="badges-container">
+<div class="badge-item">
+  <div class="badge-icon">🔒</div>
+  <div class="badge-text">Secure Payment</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">📦</div>
+  <div class="badge-text">Free Shipping</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">↩️</div>
+  <div class="badge-text">Easy Returns</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">🏆</div>
+  <div class="badge-text">Quality Guarantee</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">💬</div>
+  <div class="badge-text">24/7 Support</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer Section -->
+<footer>
+<div class="container">
+<div class="footer-content">
+<div class="footer-column">
+  <div class="footer-logo">
+      <span class="logo-icon">🥬</span> Veggie
+  </div>
+  <p>Your trusted source for fresh groceries and organic products delivered right to your doorstep.</p>
+  <div class="social-links">
+      <a href="#" class="social-link">Facebook</a>
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">Twitter</a>
+  </div>
+</div>
+<div class="footer-column">
+  <h3>Shop</h3>
+  <ul class="footer-links">
+      <li><a href="#">Vegetables</a></li>
+      <li><a href="#">Fruits</a></li>
+      <li><a href="#">Fresh Herbs</a></li>
+      <li><a href="#">Organic Products</a></li>
+      <li><a href="#">Weekly Boxes</a></li>
+      <li><a href="#">Gift Cards</a></li>
+  </ul>
+</div>
+<div class="footer-column">
+  <h3>Company</h3>
+  <ul class="footer-links">
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Our Farmers</a></li>
+      <li><a href="#">Sustainability</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Press</a></li>
+  </ul>
+</div>
+<div class="footer-column">
+  <h3>Customer Service</h3>
+  <ul class="footer-links">
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Shipping & Delivery</a></li>
+      <li><a href="#">Return Policy</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms & Conditions</a></li>
+      <li><a href="#">Contact Us</a></li>
+  </ul>
+</div>
+<div class="footer-column">
+  <h3>Contact Us</h3>
+  <ul class="contact-info">
+      <li><strong>Email:</strong> info@veggie.com</li>
+      <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+      <li><strong>Address:</strong> 123 Veggie Street, Fresh City, FC 12345</li>
+      <li><strong>Hours:</strong> Mon-Fri: 8am-8pm, Sat-Sun: 9am-6pm</li>
+  </ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="payment-methods">
+  <span>We accept:</span>
+  <span class="payment-icon">Visa</span>
+  <span class="payment-icon">Mastercard</span>
+  <span class="payment-icon">American Express</span>
+  <span class="payment-icon">PayPal</span>
+  <span class="payment-icon">Apple Pay</span>
+  <span class="payment-icon">Mobile Money</span>
+</div>
+<p class="copyright">&copy; 2025 Veggie. All rights reserved.</p>
+</div>
+</div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Veggie Fresh Groceries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Additional styles specific to products page */
+        .products-hero {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .products-hero h1 {
+            color: #2e7d32;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .products-hero p {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .filter-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-dropdown {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 0.9rem;
+        }
+        
+        .search-filter-container {
+            display: flex;
+            min-width: 300px;
+        }
+        
+        .filter-search {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 0.9rem;
+        }
+        
+        .filter-search-btn {
+            padding: 10px 15px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .filter-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .filter-badge:hover {
+            background-color: #c8e6c9;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .product-img-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .organic-badge {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .sale-badge {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .product-category {
+            color: #757575;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        
+        .product-farm {
+            color: #2e7d32;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .product-price .original-price {
+            text-decoration: line-through;
+            color: #757575;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+        
+        .product-price .sale-price {
+            color: #c62828;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 5px;
+        }
+        
+        .review-count {
+            color: #757575;
+            font-size: 0.85rem;
+        }
+        
+        .product-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .add-to-cart-btn {
+            flex: 1;
+            padding: 8px 15px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: #1b5e20;
+        }
+        
+        .quick-view-btn {
+            padding: 8px 15px;
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .quick-view-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 5px;
+        }
+        
+        .page-btn {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn.active {
+            background-color: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: #f5f5f5;
+        }
+        
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-filter-container {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .filter-dropdown {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section (Same as Home Page) -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <span class="logo-icon">🥬</span> Veggie
+                </div>
+                <div class="search-container">
+                    <form class="search-form">
+                        <input type="search" placeholder="Search for vegetables, fruits, herbs..." class="search-input">
+                        <button type="submit" class="search-button">🔍</button>
+                    </form>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products" class="active">Products</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                </ul>
+                <div class="user-actions">
+                    <div class="user-account">
+                        <a href="#" id="account-button">👤 Account</a>
+                    </div>
+                    <div class="cart-icon" id="cart-button">
+                        🛒 <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Search Bar (for responsive design) -->
+    <div class="mobile-search-container">
+        <form class="mobile-search-form">
+            <input type="search" placeholder="Search products..." class="mobile-search-input">
+            <button type="submit" class="mobile-search-button">🔍</button>
+        </form>
+    </div>
+
+    <!-- Products Hero Section -->
+    <section class="products-hero">
+        <div class="container">
+            <h1>Our Fresh Products</h1>
+            <p>Browse our wide selection of fresh, organic products sourced directly from local farmers to your table.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="container">
+        <div class="filter-section">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <select class="filter-dropdown" id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="fruits">Fruits</option>
+                        <option value="herbs">Herbs</option>
+                        <option value="dairy">Dairy</option>
+                        <option value="grains">Grains</option>
+                        <option value="pantry">Pantry</option>
+                        <option value="seafood">Seafood</option>
+                        <option value="canned">Canned Goods</option>
+                        <option value="snacks">Snacks</option>
+                    </select>
+                    <select class="filter-dropdown" id="sort-filter">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                        <option value="rating">Top Rated</option>
+                    </select>
+                    <select class="filter-dropdown" id="farm-filter">
+                        <option value="all">All Farms</option>
+                        <option value="Green Valley Farm">Green Valley Farm</option>
+                        <option value="Sunny Fields">Sunny Fields</option>
+                        <option value="Tropical Harvests">Tropical Harvests</option>
+                        <option value="Fresh Greens Farm">Fresh Greens Farm</option>
+                        <option value="Herb Haven">Herb Haven</option>
+                        <option value="Berry Fields">Berry Fields</option>
+                        <option value="Sunshine Gardens">Sunshine Gardens</option>
+                    </select>
+                </div>
+                <div class="search-filter-container">
+                    <input type="search" placeholder="Search products..." class="filter-search" id="product-search">
+                    <button class="filter-search-btn">Search</button>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <span class="filter-badge" data-filter="sale">On Sale</span>
+                <span class="filter-badge" data-filter="organic">Organic Only</span>
+                <span class="filter-badge" data-filter="in-stock">In Stock</span>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="products-grid">
+            <!-- Products will be loaded here dynamically -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn">Previous</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">Next</button>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Join Our Community</h2>
+                <p>Subscribe to receive weekly recipes, seasonal updates, and exclusive offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges Section -->
+    <section class="trust-badges">
+        <div class="container">
+            <div class="badges-container">
+                <div class="badge-item">
+                    <div class="badge-icon">🔒</div>
+                    <div class="badge-text">Secure Payment</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">📦</div>
+                    <div class="badge-text">Free Shipping</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">↩️</div>
+                    <div class="badge-text">Easy Returns</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">Quality Guarantee</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">💬</div>
+                    <div class="badge-text">24/7 Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section (Same as Home Page) -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🥬</span> Veggie
+                    </div>
+                    <p>Your trusted source for fresh groceries and organic products delivered right to your doorstep.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Vegetables</a></li>
+                        <li><a href="#">Fruits</a></li>
+                        <li><a href="#">Fresh Herbs</a></li>
+                        <li><a href="#">Organic Products</a></li>
+                        <li><a href="#">Weekly Boxes</a></li>
+                        <li><a href="#">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Farmers</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping & Delivery</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><strong>Email:</strong> info@veggie.com</li>
+                        <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+                        <li><strong>Address:</strong> 123 Veggie Street, Fresh City, FC 12345</li>
+                        <li><strong>Hours:</strong> Mon-Fri: 8am-8pm, Sat-Sun: 9am-6pm</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="payment-methods">
+                    <span>We accept:</span>
+                    <span class="payment-icon">Visa</span>
+                    <span class="payment-icon">Mastercard</span>
+                    <span class="payment-icon">American Express</span>
+                    <span class="payment-icon">PayPal</span>
+                    <span class="payment-icon">Apple Pay</span>
+                    <span class="payment-icon">Mobile Money</span>
+                </div>
+                <p class="copyright">&copy; 2025 Veggie. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal (Same as Home Page) -->
+    <div id="cart-modal">
+        <div class="cart-content">
+            <span class="close-cart">&times;</span>
+            <h2>Your Shopping Cart</h2>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be loaded here dynamically -->
+            </div>
+            <div class="cart-actions">
+                <button class="continue-shopping" id="continue-shopping">Continue Shopping</button>
+                <button class="empty-cart" id="empty-cart">Empty Cart</button>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>$<span id="cart-subtotal">0.00</span></span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery:</span>
+                    <span>$<span id="cart-delivery">0.00</span></span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span>$<span id="cart-total">0.00</span></span>
+                </div>
+                <div class="promo-code">
+                    <input type="text" placeholder="Promo Code">
+                    <button>Apply</button>
+                </div>
+                <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="quick-view-modal" style="display: none;">
+        <div class="quick-view-content">
+            <span class="close-quick-view">&times;</span>
+            <div class="quick-view-grid">
+                <div class="quick-view-image">
+                    <img id="quick-view-img" src="" alt="Product Image">
+                </div>
+                <div class="quick-view-details">
+                    <h2 id="quick-view-name"></h2>
+                    <div class="quick-view-farm" id="quick-view-farm"></div>
+                    <div class="quick-view-rating">
+                        <div class="stars" id="quick-view-stars"></div>
+                        <span class="review-count" id="quick-view-reviews"></span>
+                    </div>
+                    <div class="quick-view-price" id="quick-view-price"></div>
+                    <div class="quick-view-description" id="quick-view-description"></div>
+                    <div class="quick-view-badges" id="quick-view-badges"></div>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus">-</button>
+                        <input type="number" value="1" min="1" class="quantity-input">
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="add-to-cart-btn quick-view-add">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+        <div class="footer-content">
+        <div class="footer-column">
+        <div class="footer-logo">
+            <span class="logo-icon">🥬</span> Veggie
+        </div>
+        <p>Your trusted source for fresh groceries and organic products delivered right to your doorstep.</p>
+        <div class="social-links">
+            <a href="#" class="social-link">Facebook</a>
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">Twitter</a>
+        </div>
+        </div>
+        <div class="footer-column">
+        <h3>Shop</h3>
+        <ul class="footer-links">
+            <li><a href="#">Vegetables</a></li>
+            <li><a href="#">Fruits</a></li>
+            <li><a href="#">Fresh Herbs</a></li>
+            <li><a href="#">Organic Products</a></li>
+            <li><a href="#">Weekly Boxes</a></li>
+            <li><a href="#">Gift Cards</a></li>
+        </ul>
+        </div>
+        <div class="footer-column">
+        <h3>Company</h3>
+        <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Farmers</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+        </ul>
+        </div>
+        <div class="footer-column">
+        <h3>Customer Service</h3>
+        <ul class="footer-links">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping & Delivery</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+        </div>
+        <div class="footer-column">
+        <h3>Contact Us</h3>
+        <ul class="contact-info">
+            <li><strong>Email:</strong> info@veggie.com</li>
+            <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+            <li><strong>Address:</strong> 123 Veggie Street, Fresh City, FC 12345</li>
+            <li><strong>Hours:</strong> Mon-Fri: 8am-8pm, Sat-Sun: 9am-6pm</li>
+        </ul>
+        </div>
+        </div>
+        <div class="footer-bottom">
+        <div class="payment-methods">
+        <span>We accept:</span>
+        <span class="payment-icon">Visa</span>
+        <span class="payment-icon">Mastercard</span>
+        <span class="payment-icon">American Express</span>
+        <span class="payment-icon">PayPal</span>
+        <span class="payment-icon">Apple Pay</span>
+        <span class="payment-icon">Mobile Money</span>
+        </div>
+        <p class="copyright">&copy; 2025 Veggie. All rights reserved.</p>
+        </div>
+        </div>
+        </footer>
+        
+        <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+    </html>        

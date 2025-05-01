@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veggie - Blog</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/.css') }}">
+</head>
+<body>
+<!-- Header Section -->
+<header>
+<div class="container">
+<nav>
+<div class="logo">
+  <span class="logo-icon">🥬</span> Veggie
+</div>
+<div class="search-container">
+  <form class="search-form">
+      <input type="search" placeholder="Search our blog..." class="search-input">
+      <button type="submit" class="search-button">🔍</button>
+  </form>
+</div>
+<ul class="nav-links">
+  <li><a href="/">Home</a></li>
+  <li><a href="/products">Products</a></li>
+  <li><a href="/about">About Us</a></li>
+  <li><a href="/contact">Contact</a></li>
+  <li><a href="/blog" class="active">Blog</a></li>
+</ul>
+<div class="user-actions">
+  <div class="user-account">
+      <a href="#" id="account-button">👤 Account</a>
+  </div>
+  <div class="cart-icon" id="cart-button">
+      🛒 <span class="cart-count">0</span>
+  </div>
+</div>
+</nav>
+</div>
+</header>
+
+<!-- Mobile Search Bar (for responsive design) -->
+<div class="mobile-search-container">
+<form class="mobile-search-form">
+<input type="search" placeholder="Search blog posts..." class="mobile-search-input">
+<button type="submit" class="mobile-search-button">🔍</button>
+</form>
+</div>
+
+<!-- Blog Hero Section -->
+<section class="blog-hero">
+  <div class="container">
+    <div class="blog-hero-content">
+      <h1>Veggie Blog</h1>
+      <p>Stay informed with the latest news, recipes, and tips for healthy eating and sustainable living.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Post Section -->
+<section class="featured-post">
+  <div class="container">
+    <div class="featured-post-card">
+      <div class="featured-post-image">
+        <img src="{{ url_for('static', filename='images/blog-featured.jpg') }}" alt="Featured Blog Post">
+      </div>
+      <div class="featured-post-content">
+        <span class="post-category">Editor's Pick</span>
+        <h2>The Complete Guide to Seasonal Eating</h2>
+        <div class="post-meta">
+          <span class="post-author">By Sarah Johnson</span>
+          <span class="post-date">April 28, 2025</span>
+          <span class="post-read-time">12 min read</span>
+        </div>
+        <p class="post-excerpt">Discover why eating with the seasons is not only better for the environment but also provides maximum nutritional benefits and flavor. Learn how to identify what's in season and plan your meals accordingly.</p>
+        <a href="#" class="read-more-btn">Read Full Article</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Categories Section -->
+<section class="blog-categories">
+  <div class="container">
+    <h2 class="section-title">Explore by Category</h2>
+    <div class="categories-grid">
+      <a href="#" class="category-item">
+        <div class="category-icon">🥗</div>
+        <h3>Recipes</h3>
+        <p>42 articles</p>
+      </a>
+      <a href="#" class="category-item">
+        <div class="category-icon">🌱</div>
+        <h3>Nutrition</h3>
+        <p>38 articles</p>
+      </a>
+      <a href="#" class="category-item">
+        <div class="category-icon">👨‍🌾</div>
+        <h3>Farm Stories</h3>
+        <p>27 articles</p>
+      </a>
+      <a href="#" class="category-item">
+        <div class="category-icon">♻️</div>
+        <h3>Sustainability</h3>
+        <p>31 articles</p>
+      </a>
+      <a href="#" class="category-item">
+        <div class="category-icon">🧠</div>
+        <h3>Wellness</h3>
+        <p>25 articles</p>
+      </a>
+      <a href="#" class="category-item">
+        <div class="category-icon">🍳</div>
+        <h3>Cooking Tips</h3>
+        <p>34 articles</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Articles Section -->
+<section class="latest-articles">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Latest Articles</h2>
+      <div class="article-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="recipes">Recipes</button>
+        <button class="filter-btn" data-filter="nutrition">Nutrition</button>
+        <button class="filter-btn" data-filter="sustainability">Sustainability</button>
+      </div>
+    </div>
+    
+    <div class="articles-grid">
+      <!-- Article 1 -->
+      <div class="article-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/blog1.jpg') }}" alt="Blog Post Image">
+          <span class="article-category">Recipes</span>
+        </div>
+        <div class="article-content">
+          <h3><a href="#">5 Delicious Ways to Use Spring Vegetables</a></h3>
+          <div class="article-meta">
+            <span class="article-date">April 25, 2025</span>
+            <span class="article-read-time">8 min read</span>
+          </div>
+          <p class="article-excerpt">Make the most of spring produce with these simple yet flavorful recipes that highlight the natural goodness of seasonal vegetables.</p>
+          <a href="#" class="read-more">Continue Reading</a>
+        </div>
+      </div>
+      
+      <!-- Article 2 -->
+      <div class="article-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/blog2.jpg') }}" alt="Blog Post Image">
+          <span class="article-category">Nutrition</span>
+        </div>
+        <div class="article-content">
+          <h3><a href="#">The Power of Plant-Based Proteins</a></h3>
+          <div class="article-meta">
+            <span class="article-date">April 22, 2025</span>
+            <span class="article-read-time">10 min read</span>
+          </div>
+          <p class="article-excerpt">Discover how plant-based proteins can provide all the nutrients you need while supporting sustainable farming practices.</p>
+          <a href="#" class="read-more">Continue Reading</a>
+        </div>
+      </div>
+      
+      <!-- Article 3 -->
+      <div class="article-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/blog3.jpg') }}" alt="Blog Post Image">
+          <span class="article-category">Farm Stories</span>
+        </div>
+        <div class="article-content">
+          <h3><a href="#">Meet the Johnsons: Three Generations of Organic Farming</a></h3>
+          <div class="article-meta">
+            <span class="article-date">April 18, 2025</span>
+            <span class="article-read-time">15 min read</span>
+          </div>
+          <p class="article-excerpt">Learn about how one family transformed their conventional farm into a thriving organic operation that now supplies our freshest produce.</p>
+          <a href="#" class="read-more">Continue Reading</a>
+        </div>
+      </div>
+      
+      <!-- Article 4 -->
+      <div class="article-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/blog4.jpg') }}" alt="Blog Post Image">
+          <span class="article-category">Sustainability</span>
+        </div>
+        <div class="article-content">
+          <h3><a href="#">How Our Zero-Waste Initiative Is Making a Difference</a></h3>
+          <div class="article-meta">
+            <span class="article-date">April 15, 2025</span>
+            <span class="article-read-time">12 min read</span>
+          </div>
+          <p class="article-excerpt">Discover the steps we're taking to reduce waste throughout our supply chain and how you can join our mission for a greener planet.</p>
+          <a href="#" class="read-more">Continue Reading</a>
+        </div>
+      </div>
+      
+      <!-- Article 5 -->
+      <div class="article-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/blog5.jpg') }}" alt="Blog Post Image">
+          <span class="article-category">Cooking Tips</span>
+        </div>
+        <div class="article-content">
+          <h3><a href="#">Master the Art of Vegetable Fermentation</a></h3>
+          <div class="article-meta">
+            <span class="article-date">April 12, 2025</span>
+            <span class="article-read-time">9 min read</span>
+          </div>
+          <p class="article-excerpt">Learn the ancient technique of fermentation to extend the life of your vegetables while boosting their nutritional profile and flavor.</p>
+          <a href="#" class="read-more">Continue Reading</a>
+        </div>
+      </div>
+      
+      <!-- Article 6 -->
+      <div class="article-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/blog6.jpg') }}" alt="Blog Post Image">
+          <span class="article-category">Wellness</span>
+        </div>
+        <div class="article-content">
+          <h3><a href="#">The Connection Between Gut Health and Fresh Produce</a></h3>
+          <div class="article-meta">
+            <span class="article-date">April 10, 2025</span>
+            <span class="article-read-time">11 min read</span>
+          </div>
+          <p class="article-excerpt">Explore how incorporating more fresh, organic vegetables into your diet can dramatically improve your gut microbiome and overall health.</p>
+          <a href="#" class="read-more">Continue Reading</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pagination">
+      <a href="#" class="pagination-item active">1</a>
+      <a href="#" class="pagination-item">2</a>
+      <a href="#" class="pagination-item">3</a>
+      <a href="#" class="pagination-item">4</a>
+      <a href="#" class="pagination-item">...</a>
+      <a href="#" class="pagination-item">10</a>
+      <a href="#" class="pagination-item next">Next →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Sidebar Section -->
+<section class="blog-content">
+  <div class="container">
+    <div class="blog-main-content">
+      <h2 class="section-title">Most Popular</h2>
+      
+      <div class="popular-posts">
+        <!-- Popular Post 1 -->
+        <div class="popular-post">
+          <div class="popular-post-image">
+            <img src="{{ url_for('static', filename='images/popular1.jpg') }}" alt="Popular Post">
+          </div>
+          <div class="popular-post-content">
+            <h3><a href="#">10 Superfoods You Should Include in Your Diet Today</a></h3>
+            <div class="popular-post-meta">
+              <span class="post-date">March 30, 2025</span>
+              <span class="post-views">8.4K views</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Popular Post 2 -->
+        <div class="popular-post">
+          <div class="popular-post-image">
+            <img src="{{ url_for('static', filename='images/popular2.jpg') }}" alt="Popular Post">
+          </div>
+          <div class="popular-post-content">
+            <h3><a href="#">How to Start Your Own Kitchen Garden: A Beginner's Guide</a></h3>
+            <div class="popular-post-meta">
+              <span class="post-date">February 12, 2025</span>
+              <span class="post-views">7.2K views</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Popular Post 3 -->
+        <div class="popular-post">
+          <div class="popular-post-image">
+            <img src="{{ url_for('static', filename='images/popular3.jpg') }}" alt="Popular Post">
+          </div>
+          <div class="popular-post-content">
+            <h3><a href="#">The Environmental Impact of Food Transportation and How to Reduce It</a></h3>
+            <div class="popular-post-meta">
+              <span class="post-date">January 28, 2025</span>
+              <span class="post-views">6.8K views</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="blog-sidebar">
+      <div class="sidebar-widget about-widget">
+        <h3>About Our Blog</h3>
+        <p>The Veggie Blog is your resource for healthy eating tips, sustainable living advice, and delicious plant-based recipes. Our team of nutritionists, chefs, and sustainability experts share their knowledge to help you live a healthier life.</p>
+      </div>
+      
+      <div class="sidebar-widget search-widget">
+        <h3>Search Articles</h3>
+        <form class="sidebar-search-form">
+          <input type="search" placeholder="Search..." class="sidebar-search-input">
+          <button type="submit" class="sidebar-search-button">Search</button>
+        </form>
+      </div>
+      
+      <div class="sidebar-widget categories-widget">
+        <h3>Categories</h3>
+        <ul class="sidebar-categories">
+          <li><a href="#">Recipes <span>(42)</span></a></li>
+          <li><a href="#">Nutrition <span>(38)</span></a></li>
+          <li><a href="#">Farm Stories <span>(27)</span></a></li>
+          <li><a href="#">Sustainability <span>(31)</span></a></li>
+          <li><a href="#">Wellness <span>(25)</span></a></li>
+          <li><a href="#">Cooking Tips <span>(34)</span></a></li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-widget recent-posts-widget">
+        <h3>Recent Posts</h3>
+        <ul class="recent-posts">
+          <li>
+            <a href="#">How to Store Fresh Herbs for Maximum Shelf Life</a>
+            <span class="post-date">April 20, 2025</span>
+          </li>
+          <li>
+            <a href="#">Seasonal Produce Guide: What to Buy This Month</a>
+            <span class="post-date">April 15, 2025</span>
+          </li>
+          <li>
+            <a href="#">The Benefits of Community Supported Agriculture</a>
+            <span class="post-date">April 10, 2025</span>
+          </li>
+          <li>
+            <a href="#">Simple Swaps to Make Your Kitchen More Eco-Friendly</a>
+            <span class="post-date">April 5, 2025</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-widget tags-widget">
+        <h3>Popular Tags</h3>
+        <div class="tags-cloud">
+          <a href="#" class="tag">Organic</a>
+          <a href="#" class="tag">Vegan</a>
+          <a href="#" class="tag">Recipes</a>
+          <a href="#" class="tag">Health</a>
+          <a href="#" class="tag">Green Living</a>
+          <a href="#" class="tag">Seasonal</a>
+          <a href="#" class="tag">Eco-Friendly</a>
+          <a href="#" class="tag">Farm Fresh</a>
+          <a href="#" class="tag">Nutrition</a>
+          <a href="#" class="tag">Sustainable</a>
+        </div>
+      </div>
+      
+      <div class="sidebar-widget newsletter-widget">
+        <h3>Subscribe to Our Newsletter</h3>
+        <p>Get the latest articles, recipes, and tips delivered to your inbox weekly.</p>
+        <form class="sidebar-newsletter-form">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Author Spotlight Section -->
+<section class="author-spotlight">
+  <div class="container">
+    <h2 class="section-title">Meet Our Writers</h2>
+    <div class="authors-grid">
+      <div class="author-card">
+        <div class="author-image">
+          <img src="{{ url_for('static', filename='images/author1.jpg') }}" alt="Author">
+        </div>
+        <div class="author-info">
+          <h3>Sarah Johnson</h3>
+          <p class="author-title">Nutrition Specialist</p>
+          <p class="author-bio">Sarah is a registered nutritionist with over 10 years of experience helping people make better food choices.</p>
+          <div class="author-social">
+            <a href="#" class="social-link-info">Twitter</a>
+            <a href="#" class="social-link-info">Instagram</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="author-card">
+        <div class="author-image">
+          <img src="{{ url_for('static', filename='images/author2.jpg') }}" alt="Author">
+        </div>
+        <div class="author-info">
+          <h3>Michael Chen</h3>
+          <p class="author-title">Chef & Food Writer</p>
+          <p class="author-bio">Michael is a professional chef turned food writer who specializes in creative plant-based recipes.</p>
+          <div class="author-social">
+            <a href="#" class="social-link-info">Twitter</a>
+            <a href="#" class="social-link-info">Instagram</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="author-card">
+        <div class="author-image">
+          <img src="{{ url_for('static', filename='images/author3.jpg') }}" alt="Author">
+        </div>
+        <div class="author-info">
+          <h3>Emily Rodriguez</h3>
+          <p class="author-title">Sustainability Expert</p>
+          <p class="author-bio">Emily has devoted her career to promoting sustainable farming practices and eco-friendly living.</p>
+          <div class="author-social">
+            <a href="#" class="social-link-info">Twitter</a>
+            <a href="#" class="social-link-info">Instagram</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="author-card">
+        <div class="author-image">
+          <img src="{{ url_for('static', filename='images/author4.jpg') }}" alt="Author">
+        </div>
+        <div class="author-info">
+          <h3>James Wilson</h3>
+          <p class="author-title">Organic Farmer</p>
+          <p class="author-bio">James comes from a long line of farmers and shares practical insights from his family's organic farm.</p>
+          <div class="author-social">
+            <a href="#" class="social-link-info">Twitter</a>
+            <a href="#" class="social-link-info">Instagram</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="blog-cta">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Want Fresh Vegetables Delivered to Your Door?</h2>
+      <p>Sign up for our weekly subscription box and get the freshest seasonal produce delivered directly from our partner farms.</p>
+      <div class="cta-buttons">
+        <a href="#" class="cta-btn primary">Subscribe Now</a>
+        <a href="#" class="cta-btn secondary">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter">
+<div class="container">
+<div class="newsletter-content">
+<h2>Join Our Community</h2>
+<p>Subscribe to receive weekly recipes, seasonal updates, and exclusive offers.</p>
+<form class="newsletter-form">
+  <input type="email" placeholder="Your email address" required>
+  <button type="submit">Subscribe</button>
+</form>
+<p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+</div>
+</div>
+</section>
+
+<!-- Trust Badges Section -->
+<section class="trust-badges">
+<div class="container">
+<div class="badges-container">
+<div class="badge-item">
+  <div class="badge-icon">🔒</div>
+  <div class="badge-text">Secure Payment</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">📦</div>
+  <div class="badge-text">Free Shipping</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">↩️</div>
+  <div class="badge-text">Easy Returns</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">🏆</div>
+  <div class="badge-text">Quality Guarantee</div>
+</div>
+<div class="badge-item">
+  <div class="badge-icon">💬</div>
+  <div class="badge-text">24/7 Support</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer Section -->
+<footer>
+<div class="container">
+<div class="footer-content">
+<div class="footer-column">
+  <div class="footer-logo">
+      <span class="logo-icon">🥬</span> Veggie
+  </div>
+  <p>Your trusted source for fresh groceries and organic products delivered right to your doorstep.</p>
+  <div class="social-links">
+      <a href="#" class="social-link">Facebook</a>
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">Twitter</a>
+  </div>
+</div>
+<div class="footer-column">
+  <h3>Shop</h3>
+  <ul class="footer-links">
+      <li><a href="#">Vegetables</a></li>
+      <li><a href="#">Fruits</a></li>
+      <li><a href="#">Fresh Herbs</a></li>
+      <li><a href="#">Organic Products</a></li>
+      <li><a href="#">Weekly Boxes</a></li>
+      <li><a href="#">Gift Cards</a></li>
+  </ul>
+</div>
+<div class="footer-column">
+  <h3>Company</h3>
+  <ul class="footer-links">
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Our Farmers</a></li>
+      <li><a href="#">Sustainability</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Press</a></li>
+  </ul>
+</div>
+<div class="footer-column">
+  <h3>Customer Service</h3>
+  <ul class="footer-links">
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Shipping & Delivery</a></li>
+      <li><a href="#">Return Policy</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms & Conditions</a></li>
+      <li><a href="#">Contact Us</a></li>
+  </ul>
+</div>
+<div class="footer-column">
+  <h3>Contact Us</h3>
+  <ul class="contact-info">
+      <li><strong>Email:</strong> info@veggie.com</li>
+      <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+      <li><strong>Address:</strong> 123 Veggie Street, Fresh City, FC 12345</li>
+      <li><strong>Hours:</strong> Mon-Fri: 8am-8pm, Sat-Sun: 9am-6pm</li>
+  </ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="payment-methods">
+  <span>We accept:</span>
+  <span class="payment-icon">Visa</span>
+  <span class="payment-icon">Mastercard</span>
+  <span class="payment-icon">American Express</span>
+  <span class="payment-icon">PayPal</span>
+  <span class="payment-icon">Apple Pay</span>
+  <span class="payment-icon">Mobile Money</span>
+</div>
+<p class="copyright">&copy; 2025 Veggie. All rights reserved.</p>
+</div>
+</div>
+</footer>
+
+<!-- Cart Modal -->
+<div id="cart-modal">
+<div class="cart-content">
+<span class="close-cart">&times;</span>
+<h2>Your Shopping Cart</h2>
+<div class="cart-items" id="cart-items">
+<!-- Cart items will be loaded here dynamically -->
+</div>
+<div class="cart-actions">
+<button class="continue-shopping" id="continue-shopping">Continue Shopping</button>
+<button class="empty-cart" id="empty-cart">Empty Cart</button>
+</div>
+<div class="cart-summary">
+<div class="summary-row">
+  <span>Subtotal:</span>
+  <span>$<span id="cart-subtotal">0.00</span></span>
+</div>
+<div class="summary-row">
+  <span>Delivery:</span>
+  <span>$<span id="cart-delivery">0.00</span></span>
+</div>
+<div class="summary-row total">
+  <span>Total:</span>
+  <span>$<span id="cart-total">0.00</span></span>
+</div>
+<div class="promo-code">
+  <input type="text" placeholder="Promo Code">
+  <button>Apply</button>
+</div>
+<button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+</div>
+</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<!-- Blog specific script -->
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+</body>
+</html>
