@@ -7,7 +7,7 @@ import json
 from datetime import datetime, timedelta
 import uuid
 import random
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 
 app = Flask(__name__)
 
