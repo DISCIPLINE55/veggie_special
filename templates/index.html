@@ -62,29 +62,32 @@
     </div>
   </div>
 
-  <div class="hero-content">
-    <h1>Fresh Groceries Delivered</h1>
-    <p>Shop the freshest vegetables and fruits from local farmers</p>
-    <div class="hero-buttons">
+ <!-- Hero section with proper Flask/app.py compatible links -->
+<div class="hero-content">
+  <h1>Fresh Groceries Delivered</h1>
+  <p>Shop the freshest vegetables and fruits from local farmers</p>
+  <div class="hero-buttons">
+    <!-- Using anchor tags for proper navigation -->
+    <a href="{{ url_for('landing') }}#products">
       <button class="hero-button primary">Shop Now</button>
-      <button class="hero-button secondary">Our Process</button>
-    </div>
-    <div class="hero-badges">
+  </a>
+  <a href="{{ url_for('landing', openModal='process') }}">
+    <button class="hero-button secondary">Our Process</button>
+  </a>
+  </div>
+  <div class="hero-badges">
+    <a href="{{ url_for('landing', openModal='organic') }}">
       <span class="badge">Organic</span>
+    </a>
+    <a href="{{ url_for('landing', openModal='farm') }}">
       <span class="badge">Farm-to-Table</span>
+    </a>
+    <a href="{{ url_for('landing', openModal='delivery') }}">
       <span class="badge">Free Delivery</span>
-    </div>
+    </a>
   </div>
-
-  <div id="grocery-list-popup" style="margin-top: 17px;">
-    <ul>
-        <li>Broccoli</li>
-        <li>Pineapple</li>
-        <li>Mango</li>
-        <li>Onion</li>
-        <li>Ginger</li>
-    </ul>
-  </div>
+</div>
+  
 </section>
 
 

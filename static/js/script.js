@@ -1,12 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Ensure all code blocks are properly closed
+});
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener for Read Full Article buttons
+    const readMoreButtons = document.querySelectorAll('.read-more-btn');
+    readMoreButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const articleId = this.dataset.article;
+        const article = document.getElementById(articleId);
+        if (article) {
+          article.classList.toggle('expanded');
+          this.textContent = article.classList.contains('expanded') ? 'Read Less' : 'Read Full Article';
+        }
+      });
+    });
+
     // Initialize the site
     loadProducts();
     setupEventListeners();
     setupModals();
+    setupNotificationCSS();
     initializeFilters();
+    initializeFAQ();
     initializeQuickView();
     initializePagination();
+    initializeCouponSystem();
   });
+
+  
   
   // Global cart object
   const cart = {
@@ -1278,3 +1301,746 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+
+// Fix math calculations in cart
+function updateCart() {
+  // Calculations with proper precision
+  cart.subtotal = parseFloat(cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2));
+  cart.delivery = cart.subtotal > 50 ? 0 : 4.99;
+  cart.tax = parseFloat((cart.subtotal * 0.08).toFixed(2)); // 8% tax rate with proper rounding
+  cart.total = parseFloat((cart.subtotal + cart.delivery + cart.tax).toFixed(2));
+  
+  // Apply any active coupon discount
+  if (cart.couponDiscount > 0) {
+    cart.total = parseFloat((cart.total - cart.couponDiscount).toFixed(2));
+  }
+  
+  // Update cart counter
+  const totalItems = cart.items.reduce((count, item) => count + item.quantity, 0);
+  const cartCountElement = document.querySelector('.cart-count');
+  if (cartCountElement) {
+    cartCountElement.textContent = totalItems;
+  }
+  
+  // Update cart modal
+  const cartItemsContainer = document.getElementById('cart-items');
+  if (!cartItemsContainer) return;
+  
+  cartItemsContainer.innerHTML = '';
+  
+  // Handle empty cart state
+  if (cart.items.length === 0) {
+    cartItemsContainer.innerHTML = '<div class="empty-cart-message">Your cart is empty.</div>';
+    
+    // Disable checkout button when cart is empty
+    const checkoutBtn = document.getElementById('checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('disabled');
+    }
+    
+    // Reset coupon if cart is empty
+    cart.couponDiscount = 0;
+    const couponInput = document.getElementById('coupon-code');
+    if (couponInput) couponInput.value = '';
+    const couponMessage = document.getElementById('coupon-message');
+    if (couponMessage) couponMessage.textContent = '';
+  } else {
+    // Enable checkout button when cart has items
+    const checkoutBtn = document.getElementById('checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('disabled');
+    }
+    
+    // Populate cart items
+    cart.items.forEach(item => {
+      const itemElement = document.createElement('div');
+      itemElement.className = 'cart-item';
+      itemElement.innerHTML = `
+          <div class="cart-item-image" style="background-image: url(${item.image})"></div>
+          <div class="cart-item-details">
+              <h4 class="cart-item-name">${item.name}</h4>
+              <div class="cart-item-price">$${item.price.toFixed(2)} / ${item.unit}</div>
+              <div class="cart-item-controls">
+                  <div class="quantity-control small">
+                      <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                      <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="99" data-id="${item.id}">
+                      <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                  </div>
+                  <button class="remove-item" data-id="${item.id}">Remove</button>
+              </div>
+          </div>
+          <div class="cart-item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+      `;
+      cartItemsContainer.appendChild(itemElement);
+    });
+  }
+  
+  // Update cart totals
+  const subtotalElement = document.getElementById('cart-subtotal');
+  const deliveryElement = document.getElementById('cart-delivery');
+  const taxElement = document.getElementById('cart-tax');
+  const totalElement = document.getElementById('cart-total');
+  const couponDiscountElement = document.getElementById('coupon-discount');
+  
+  if (subtotalElement) subtotalElement.textContent = cart.subtotal.toFixed(2);
+  if (deliveryElement) deliveryElement.textContent = cart.delivery.toFixed(2);
+  if (taxElement) taxElement.textContent = cart.tax.toFixed(2);
+  if (totalElement) totalElement.textContent = cart.total.toFixed(2);
+  
+  // Display coupon discount if applicable
+  if (couponDiscountElement) {
+    if (cart.couponDiscount > 0) {
+      couponDiscountElement.textContent = `-$${cart.couponDiscount.toFixed(2)}`;
+      couponDiscountElement.parentElement.style.display = 'flex';
+    } else {
+      couponDiscountElement.parentElement.style.display = 'none';
+    }
+  }
+  
+  // Update checkout modal with cart items
+  updateCheckoutSummary();
+}
+
+// Add coupon system
+function initializeCouponSystem() {
+  // Add coupon property to cart object if it doesn't exist
+  if (!cart.hasOwnProperty('couponDiscount')) {
+    cart.couponDiscount = 0;
+  }
+  
+  // Create coupon section if it doesn't exist
+  const cartTotals = document.querySelector('.cart-totals');
+  if (cartTotals) {
+    // Check if coupon section already exists
+    let couponSection = document.getElementById('coupon-section');
+    if (!couponSection) {
+      // Create coupon section HTML
+      couponSection = document.createElement('div');
+      couponSection.id = 'coupon-section';
+      couponSection.className = 'coupon-section';
+      couponSection.innerHTML = `
+        <div class="coupon-input-group">
+          <input type="text" id="coupon-code" placeholder="Enter coupon code" class="coupon-input">
+          <button id="apply-coupon" class="coupon-btn">Apply</button>
+        </div>
+        <div id="coupon-message" class="coupon-message"></div>
+        <div class="cart-total-row coupon-discount-row" style="display: none;">
+          <span>Discount:</span>
+          <span id="coupon-discount">-$0.00</span>
+        </div>
+      `;
+      
+      // Insert before the total line
+      const totalRow = cartTotals.querySelector('.cart-total-row:last-child');
+      if (totalRow) {
+        cartTotals.insertBefore(couponSection, totalRow);
+      } else {
+        cartTotals.appendChild(couponSection);
+      }
+      
+      // Add event listener for coupon button
+      const applyButton = document.getElementById('apply-coupon');
+      if (applyButton) {
+        applyButton.addEventListener('click', function() {
+          applyCoupon();
+        });
+      }
+      
+      // Add event listener for coupon input enter key
+      const couponInput = document.getElementById('coupon-code');
+      if (couponInput) {
+        couponInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            applyCoupon();
+          }
+        });
+      }
+    }
+  }
+}
+
+// Apply coupon function
+function applyCoupon() {
+  const couponInput = document.getElementById('coupon-code');
+  const couponMessage = document.getElementById('coupon-message');
+  
+  if (!couponInput || !couponMessage) return;
+  
+  const couponCode = couponInput.value.trim().toUpperCase();
+  
+  // Reset message styling
+  couponMessage.className = 'coupon-message';
+  
+  // Check if cart is empty
+  if (cart.items.length === 0) {
+    couponMessage.textContent = 'Your cart is empty.';
+    couponMessage.classList.add('error');
+    return;
+  }
+  
+  // Sample coupon codes
+  const validCoupons = {
+    'FRESH10': { type: 'percentage', value: 0.10, message: '10% discount applied!' },
+    'SAVE20': { type: 'percentage', value: 0.20, message: '20% discount applied!' },
+    'FREESHIP': { type: 'shipping', value: 0, message: 'Free shipping applied!' },
+    'DISCOUNT5': { type: 'fixed', value: 5, message: '$5 discount applied!' }
+  };
+  
+  if (couponCode === '') {
+    couponMessage.textContent = 'Please enter a coupon code.';
+    couponMessage.classList.add('error');
+    return;
+  }
+  
+  if (validCoupons[couponCode]) {
+    const coupon = validCoupons[couponCode];
+    
+    // Apply discount based on coupon type
+    if (coupon.type === 'percentage') {
+      cart.couponDiscount = parseFloat((cart.subtotal * coupon.value).toFixed(2));
+    } else if (coupon.type === 'shipping') {
+      cart.couponDiscount = cart.delivery;
+      cart.delivery = coupon.value;
+    } else if (coupon.type === 'fixed') {
+      cart.couponDiscount = Math.min(coupon.value, cart.subtotal);
+    }
+    
+    couponMessage.textContent = coupon.message;
+    couponMessage.classList.add('success');
+  } else {
+    couponMessage.textContent = 'Invalid coupon code.';
+    couponMessage.classList.add('error');
+    cart.couponDiscount = 0;
+  }
+  
+  // Update cart totals
+  updateCart();
+}
+
+// Fix for Read Full Article CSS
+function addReadMoreCSS() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .article-content {
+      max-height: 200px;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+    
+    .article-content.expanded {
+      max-height: 2000px;
+    }
+    
+    .read-more-btn {
+      display: inline-block;
+      margin-top: 10px;
+      color: #4CAF50;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    .coupon-section {
+      margin: 15px 0;
+    }
+    
+    .coupon-input-group {
+      display: flex;
+    }
+    
+    .coupon-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+    }
+    
+    .coupon-btn {
+      padding: 8px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+    
+    .coupon-message {
+      margin-top: 5px;
+      font-size: 0.9em;
+    }
+    
+    .coupon-message.success {
+      color: #4CAF50;
+    }
+    
+    .coupon-message.error {
+      color: #f44336;
+    }
+    
+    .disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+
+// Call this function on page load
+document.addEventListener('DOMContentLoaded', function() {
+  addReadMoreCSS();
+});
+
+
+
+// Mobile Search Functionality for Veggie App
+// Mobile Search Functionality for Veggie App
+
+// Reference to the mobile search input and form
+const mobileSearchInput = document.querySelector('.mobile-search-input');
+const mobileSearchForm = document.querySelector('.mobile-search-form');
+
+// Reference to the product container where we'll display the results
+const productContainer = document.getElementById('products-container');
+
+// Function to filter products based on search term
+function filterProducts(searchTerm) {
+  // Convert search term to lowercase for case-insensitive comparison
+  const term = searchTerm.toLowerCase().trim();
+  
+  // If search term is empty, show all products
+  if (term === '') {
+    displayProducts(products);
+    return;
+  }
+  
+  // Filter products based on name, category, or description
+  const filteredProducts = products.filter(product => {
+    return product.name.toLowerCase().includes(term) || 
+           product.category.toLowerCase().includes(term) || 
+           product.description.toLowerCase().includes(term);
+  });
+  
+  // Display the filtered products
+  displayProducts(filteredProducts);
+  
+  // Show a message if no products were found
+  if (filteredProducts.length === 0) {
+    productContainer.innerHTML = `
+      <div class="no-results">
+        <p>No products found matching "${searchTerm}"</p>
+        <button class="clear-search-btn">Clear Search</button>
+      </div>
+    `;
+    
+    // Add event listener to the clear search button
+    document.querySelector('.clear-search-btn').addEventListener('click', () => {
+      mobileSearchInput.value = '';
+      displayProducts(products);
+    });
+  }
+}
+
+// Function to display products
+function displayProducts(productsToDisplay) {
+  // Clear the product container
+  productContainer.innerHTML = '';
+  
+  // Add each product to the container
+  productsToDisplay.forEach(product => {
+    const productCard = createProductCard(product);
+    productContainer.appendChild(productCard);
+  });
+  
+  // Add event listeners to the add to cart buttons
+  addCartButtonListeners();
+}
+
+
+// Function to add event listeners to cart buttons
+function addCartButtonListeners() {
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const productId = parseInt(button.dataset.id);
+      addToCart(productId);
+    });
+  });
+}
+
+// Function to filter products by category
+function filterProductsByCategory(category) {
+  // Handle organic category separately since it's a property, not a category
+  if (category.toLowerCase() === 'organic') {
+    const organicProducts = products.filter(product => product.organic === true);
+    displayProducts(organicProducts);
+    
+    // Update active filter button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    // No exact match for organic in filter buttons, so keep "all" selected
+  } else {
+    // Filter products by category
+    const filteredProducts = products.filter(product => 
+      product.category.toLowerCase() === category.toLowerCase()
+    );
+    displayProducts(filteredProducts);
+    
+    // Update active filter button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.filter.toLowerCase() === category.toLowerCase()) {
+        btn.classList.add('active');
+      }
+    });
+  }
+  
+  // Scroll to products section
+  document.querySelector('.product-container').scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'
+  });
+}
+
+// Add event listener to the mobile search form
+mobileSearchForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  filterProducts(mobileSearchInput.value);
+});
+
+// Add event listener for input changes (real-time filtering)
+mobileSearchInput.addEventListener('input', function() {
+  filterProducts(this.value);
+});
+
+// Initialize the display with all products when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if the products array is available
+  if (typeof products !== 'undefined' && Array.isArray(products)) {
+    displayProducts(products);
+  } else {
+    console.error('Products data is not available');
+  }
+  
+  // Also make the main search bar functional
+  const mainSearchInput = document.querySelector('.search-input');
+  const mainSearchForm = document.querySelector('.search-form');
+  
+  if (mainSearchForm) {
+    mainSearchForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      filterProducts(mainSearchInput.value);
+    });
+  }
+  
+  if (mainSearchInput) {
+    mainSearchInput.addEventListener('input', function() {
+      filterProducts(this.value);
+    });
+  }
+  
+  // Add event listeners to category "Browse All" links
+  document.querySelectorAll('.category-link').forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      
+      // Get the category name from the previous sibling (h3 tag)
+      const categoryHeading = this.previousElementSibling;
+      if (categoryHeading && categoryHeading.tagName === 'H3') {
+        const categoryName = categoryHeading.textContent.trim();
+        filterProductsByCategory(categoryName);
+      }
+    });
+  });
+  
+  // Also add event listeners to the product filter buttons
+  document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      // Remove active class from all buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Add active class to clicked button
+      this.classList.add('active');
+      
+      // Filter products by category
+      const category = this.dataset.filter;
+      if (category === 'all') {
+        displayProducts(products);
+      } else {
+        filterProductsByCategory(category);
+      }
+    });
+  });
+});
+
+// Add this code to your fresh-groceries-landing.html page
+// This will check for URL parameters and open the appropriate modal
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Check URL parameters for modal opening instructions
+  const urlParams = new URLSearchParams(window.location.search);
+  const openModal = urlParams.get('openModal');
+  
+  if (openModal) {
+    switch (openModal) {
+      case 'process':
+        openProcessModal();
+        break;
+      case 'organic':
+        showFeatureInfo('organic');
+        break;
+      case 'farm':
+        showFeatureInfo('farm');
+        break;
+      case 'delivery':
+        showFeatureInfo('delivery');
+        break;
+    }
+  }
+  
+  // Check for hash in URL for section scrolling
+  const hash = window.location.hash;
+  if (hash) {
+    const targetId = hash.substring(1); // Remove the # character
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      // Slight delay to ensure page is fully loaded
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }
+});
+
+// main.js - Script for handling all navigation and modals across both pages
+
+// main.js - Script for handling all navigation and modals across both pages
+
+// Function to run on BOTH the main index page and landing page
+document.addEventListener('DOMContentLoaded', function() {
+  // Check URL parameters for modal opening instructions
+  const urlParams = new URLSearchParams(window.location.search);
+  const openModal = urlParams.get('openModal');
+  
+  if (openModal) {
+    // Slight delay to ensure page is fully loaded
+    setTimeout(() => {
+      switch (openModal) {
+        case 'process':
+          openProcessModal();
+          break;
+        case 'organic':
+          showFeatureInfo('organic');
+          break;
+        case 'farm':
+          showFeatureInfo('farm');
+          break;
+        case 'delivery':
+          showFeatureInfo('delivery');
+          break;
+      }
+    }, 300);
+  }
+  
+  // Check for hash in URL for section scrolling
+  const hash = window.location.hash;
+  if (hash) {
+    const targetId = hash.substring(1); // Remove the # character
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      // Slight delay to ensure page is fully loaded
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }
+  
+  // Set up any click event handlers for non-anchor buttons if needed
+  setupButtonEventListeners();
+});
+
+// Set up event listeners for any buttons that aren't using anchor tags
+function setupButtonEventListeners() {
+  // Only add these if you have buttons without anchor tags
+  // Otherwise the <a href> tags in your HTML will handle navigation
+  
+  // Example for a button without an anchor tag parent:
+  const nonAnchorButtons = document.querySelectorAll('button:not([id^="modal"])');
+  nonAnchorButtons.forEach(button => {
+    if (!button.closest('a')) {
+      button.addEventListener('click', function() {
+        // Determine which button was clicked based on class or other attributes
+        if (button.classList.contains('primary')) {
+          window.location.href = '/landing#products';
+        } else if (button.classList.contains('secondary')) {
+          window.location.href = '/landing?openModal=process';
+        }
+      });
+    }
+  });
+}
+
+// Modal functions
+function openProcessModal() {
+  showModal('process-modal', `
+    <h2 class="modal-title">Our Farm-to-Table Process</h2>
+    <p>At Fresh Groceries Delivered, we believe in transparency and quality. Here's how we bring the freshest produce to your doorstep:</p>
+    
+    <div class="process-steps">
+      <div class="step">
+        <h4>1. Harvest</h4>
+        <p>Our partner farmers harvest fresh produce in the early morning hours to ensure maximum freshness.</p>
+      </div>
+      <div class="step">
+        <h4>2. Quality Check</h4>
+        <p>Each item is hand-selected and inspected for quality, freshness, and organic certification.</p>
+      </div>
+      <div class="step">
+        <h4>3. Packaging</h4>
+        <p>We use eco-friendly packaging materials to protect produce while minimizing environmental impact.</p>
+      </div>
+      <div class="step">
+        <h4>4. Delivery</h4>
+        <p>Our refrigerated vans deliver your groceries within 24 hours of harvest, maintaining the cold chain throughout.</p>
+      </div>
+    </div>
+  `);
+}
+
+function showFeatureInfo(feature) {
+  let title, content;
+  
+  switch (feature) {
+    case 'organic':
+      title = 'Our Organic Commitment';
+      content = `
+        <p>All our produce is certified organic, grown without synthetic pesticides or fertilizers.</p>
+        <p>We work with farmers who prioritize sustainable farming practices that protect the soil, water, and biodiversity.</p>
+        <p>Our organic certification means you can trust that what you're eating is clean, natural, and environmentally responsible.</p>
+      `;
+      break;
+      
+    case 'farm':
+      title = 'Farm-to-Table Philosophy';
+      content = `
+        <p>We source directly from local farmers within a 100-mile radius of our distribution centers.</p>
+        <p>By eliminating middlemen, we ensure farmers receive fair compensation and you get fresher produce.</p>
+        <p>Our transparent supply chain means you can trace exactly where your food comes from.</p>
+      `;
+      break;
+      
+    case 'delivery':
+      title = 'Free Delivery Service';
+      content = `
+        <p>We offer free delivery on all orders over $35.</p>
+        <p>Our eco-friendly delivery vehicles reduce carbon emissions while bringing freshness to your doorstep.</p>
+        <p>Schedule deliveries for your convenience - same-day available for orders placed before 10 AM.</p>
+      `;
+      break;
+  }
+  
+  showModal(`${feature}-modal`, `
+    <h2 class="modal-title">${title}</h2>
+    ${content}
+  `);
+}
+
+// Generic modal handling
+function showModal(id, content) {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById(id);
+  
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = id;
+    modal.className = 'modal';
+    
+    const modalContent = `
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('${id}')">&times;</span>
+        ${content}
+      </div>
+    `;
+    
+    modal.innerHTML = modalContent;
+    document.body.appendChild(modal);
+    
+    // Add modal styles if not already present
+    if (!document.getElementById('modalStyles')) {
+      const style = document.createElement('style');
+      style.id = 'modalStyles';
+      style.textContent = `
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.7);
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+        }
+        
+        .modal-content {
+          background-color: white;
+          padding: 2rem;
+          border-radius: 10px;
+          width: 80%;
+          max-width: 600px;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+        
+        .close {
+          float: right;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+        
+        .modal-title {
+          margin-bottom: 1rem;
+          color: #4CAF50;
+        }
+        
+        .process-steps {
+          margin-top: 1.5rem;
+        }
+        
+        .step {
+          margin-bottom: 1.5rem;
+          padding-left: 1.5rem;
+          border-left: 3px solid #4CAF50;
+        }
+        
+        .step h4 {
+          color: #4CAF50;
+          margin-bottom: 0.5rem;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+  
+  // Display the modal
+  modal.style.display = 'flex';
+}
+
+function closeModal(id) {
+  if (id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.style.display = 'none';
+  } else {
+    // Close all modals if no ID specified
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+      modal.style.display = 'none';
+    });
+  }
+}

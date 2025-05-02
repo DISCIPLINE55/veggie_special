@@ -289,68 +289,43 @@ nav {
   100% {transform: translateX(-80%);}
 }
 
-
-/* Pop-up List */
-#grocery-list-popup {
-  position: absolute;
-  top: 15px;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
- left: 0;
-
-
+.hero-button {
+  padding: 10px 25px;
+  margin: 0 10px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid transparent;
 }
 
-#grocery-list-popup ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.primary {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
 }
 
-#grocery-list-popup ul li {
-  padding: 5px 0;
-  font-size: larger;
- font-weight: bold;
- color: black;
-  opacity: 0;
-  animation: popUpInOut 2s ease-in-out infinite;
-
+.secondary {
+  background-color: transparent;
+  color: #4CAF50;
+  border-color: #4CAF50;
 }
 
-/* Pop-up and Pop-in Animation */
-@keyframes popUpInOut {
-  0%, 100% {
-      opacity: 0;
-      transform: translateY(10px);
-  }
-  50% {
-      opacity: 1;
-      transform: translateY(0);
-  }
+.hero-badges {
+  margin-top: 30px;
 }
 
-#grocery-list-popup ul li:nth-child(1) {
-  animation-delay: 0s;
+.badge {
+  display: inline-block;
+  padding: 5px 15px;
+  margin: 0 10px;
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.badge:hover {
+  background-color: #e2e6ea;
 }
 
-#grocery-list-popup ul li:nth-child(2) {
-  animation-delay: 0.4s;
-}
-
-#grocery-list-popup ul li:nth-child(3) {
-  animation-delay: 0.7s;
-}
-
-#grocery-list-popup ul li:nth-child(4) {
-  animation-delay: 1.2s;
-}
-
-#grocery-list-popup ul li:nth-child(5) {
-  animation-delay: 1.6s;
-}
 .hero h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -404,7 +379,7 @@ nav {
 }
 
 .badge {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(85, 213, 108, 0.904);
   padding: 0.5rem 1rem;
   border-radius: 50px;
   font-size: 0.9rem;

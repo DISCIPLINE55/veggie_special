@@ -348,6 +348,16 @@ def blog():
 def account():
     return render_template('account.html')
 
+
+@app.route('/landing')
+def landing():
+    """Render the landing page with optional parameters for modals and section anchors"""
+    # Get the modal parameter if it exists
+    open_modal = request.args.get('openModal', None)
+    
+    # Render the landing page template with the modal parameter
+    return render_template('landing.html', open_modal=open_modal)
+
 # Authentication Routes
 @app.route('/api/auth/register', methods=['POST'])
 def register():
