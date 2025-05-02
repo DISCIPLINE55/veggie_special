@@ -1388,34 +1388,40 @@ def serve_static(path):
     return app.send_static_file(path)
 
 # Initialize database tables
-@app.before_first_request
+# Using with_app_context instead of before_first_request
+from flask import current_app
+
 def create_tables():
-    db.create_all()
-    
-    # Add initial data if database is empty
-    if not Category.query.first():
-        # Add default categories
-        categories = [
-            Category(name='Vegetables', description='Fresh vegetables sourced from local farms', image_url='images/categories/vegetables.jpg'),
-            Category(name='Fruits', description='Seasonal fruits packed with nutrients', image_url='images/categories/fruits.jpg'),
-            Category(name='Herbs', description='Aromatic herbs to enhance your cooking', image_url='images/categories/herbs.jpg'),
-            Category(name='Roots', description='Nutritious root vegetables', image_url='images/categories/roots.jpg')
-        ]
-        db.session.add_all(categories)
-        db.session.commit()
+    with current_app.app_context():
+        db.create_all()
         
-        # Add sample products
-        products = [
-            Product(name='Organic Tomatoes', description='Juicy, locally grown organic tomatoes', price=3.99, stock=50, image_url='images/products/tomatoes.jpg', category_id=1, is_organic=True, unit='kg'),
-            Product(name='Fresh Spinach', description='Nutrient-rich spinach leaves', price=2.49, stock=30, image_url='images/products/spinach.jpg', category_id=1, is_organic=True, is_featured=True, unit='bundle'),
-            Product(name='Ripe Bananas', description='Sweet and energy-packed bananas', price=1.99, stock=100, image_url='images/products/bananas.jpg', category_id=2, unit='kg'),
-            Product(name='Organic Apples', description='Crisp and sweet organic apples', price=4.99, stock=80, image_url='images/products/apples.jpg', category_id=2, is_organic=True, is_featured=True, unit='kg'),
-            Product(name='Fresh Basil', description='Aromatic basil, perfect for pasta and salads', price=1.99, stock=20, image_url='images/products/basil.jpg', category_id=3, is_organic=True, unit='bundle'),
-            Product(name='Sweet Potatoes', description='Versatile and nutritious sweet potatoes', price=2.99, stock=40, image_url='images/products/sweet_potatoes.jpg', category_id=4, is_featured=True, unit='kg')
-        ]
-        db.session.add_all(products)
-        db.session.commit()
+        # Add initial data if database is empty
+        if not Category.query.first():
+            # Add default categories
+            categories = [
+                Category(name='Vegetables', description='Fresh vegetables sourced from local farms', image_url='images/categories/vegetables.jpg'),
+                Category(name='Fruits', description='Seasonal fruits packed with nutrients', image_url='images/categories/fruits.jpg'),
+                Category(name='Herbs', description='Aromatic herbs to enhance your cooking', image_url='images/categories/herbs.jpg'),
+                Category(name='Roots', description='Nutritious root vegetables', image_url='images/categories/roots.jpg')
+            ]
+            db.session.add_all(categories)
+            db.session.commit()
+            
+            # Add sample products
+            products = [
+                Product(name='Organic Tomatoes', description='Juicy, locally grown organic tomatoes', price=3.99, stock=50, image_url='images/products/tomatoes.jpg', category_id=1, is_organic=True, unit='kg'),
+                Product(name='Fresh Spinach', description='Nutrient-rich spinach leaves', price=2.49, stock=30, image_url='images/products/spinach.jpg', category_id=1, is_organic=True, is_featured=True, unit='bundle'),
+                Product(name='Ripe Bananas', description='Sweet and energy-packed bananas', price=1.99, stock=100, image_url='images/products/bananas.jpg', category_id=2, unit='kg'),
+                Product(name='Organic Apples', description='Crisp and sweet organic apples', price=4.99, stock=80, image_url='images/products/apples.jpg', category_id=2, is_organic=True, is_featured=True, unit='kg'),
+                Product(name='Fresh Basil', description='Aromatic basil, perfect for pasta and salads', price=1.99, stock=20, image_url='images/products/basil.jpg', category_id=3, is_organic=True, unit='bundle'),
+                Product(name='Sweet Potatoes', description='Versatile and nutritious sweet potatoes', price=2.99, stock=40, image_url='images/products/sweet_potatoes.jpg', category_id=4, is_featured=True, unit='kg')
+            ]
+            db.session.add_all(products)
+            db.session.commit()
 
 # Run the application
 if __name__ == '__main__':
+    # Call the create_tables function before running the app
+    with app.app_context():
+        create_tables()
     app.run(debug=True)
