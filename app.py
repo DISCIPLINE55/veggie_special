@@ -1,4 +1,4 @@
-# This is a Flask application for a Veggie e-commerce platform.from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, render_template, redirect, url_for
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,39 +7,9 @@ import json
 from datetime import datetime, timedelta
 import uuid
 import random
-from flask import Flask, render_template, redirect, url_for
 
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/products')
-def products():
-    return render_template('products.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
-
-@app.route('/blog')
-def blog():
-    return render_template('blog.html')
-
-@app.route('/account')
-def account():
-    return render_template('account.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-# Initialize Flask app
-app = Flask(__name__, static_folder='static')
+# Initialize Flask app with proper configuration
+app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev_secret_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///veggie.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -62,6 +32,7 @@ class User(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_admin = db.Column(db.Boolean, default=False)  # Added admin flag
     
     # Relationships
     addresses = db.relationship('Address', backref='user', lazy=True)
@@ -351,6 +322,31 @@ def generate_order_number():
     timestamp = datetime.utcnow().strftime("%y%m%d")
     random_part = ''.join(random.choices('0123456789', k=4))
     return f"{prefix}-{timestamp}-{random_part}"
+
+# Frontend Routes
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/products')
+def products():
+    return render_template('products.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/blog')
+def blog():
+    return render_template('blog.html')
+
+@app.route('/account')
+def account():
+    return render_template('account.html')
 
 # Authentication Routes
 @app.route('/api/auth/register', methods=['POST'])
