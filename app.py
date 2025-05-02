@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session
+# This is a Flask application for a Veggie e-commerce platform.from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
