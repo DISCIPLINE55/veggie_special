@@ -190,7 +190,7 @@
   <button class="subscription-btn">Subscribe Now</button>
 </div>
 <div class="subscription-image">
-  <img src="{{ url_for('static', filename='images/subscription.jpeg') }}" alt="Veggie Subscription Box">
+  <img src="{{ url_for('static', filename='images/veggie-banner.png') }}" alt="Veggie Subscription Box">
 </div>
 </div>
 </div>
@@ -502,6 +502,7 @@
           <label for="mobile-money">Mobile Money</label>
       </div>
   </div>
+  
   <!-- Credit Card Details -->
   <div class="card-details payment-details" id="credit-card-details">
       <div class="form-group">
@@ -521,6 +522,14 @@
       <div class="form-group">
           <label for="card-name">Name on Card</label>
           <input type="text" class="form-control" id="card-name" required>
+      </div>
+      <div class="form-group">
+        <label for="expiry">Expiry Date</label>
+        <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+      </div>
+      <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input type="text" class="form-control" id="cvv" placeholder="123" required>
       </div>
   </div>
   
