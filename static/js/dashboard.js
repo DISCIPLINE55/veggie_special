@@ -424,9 +424,9 @@ function updateStatsSummary() {
   const ordersCountEl = document.getElementById('ordersCount');
   const avgOrderEl = document.getElementById('avgOrder');
   
-  if (totalSpentEl) totalSpentEl.textContent = `$${totalSpent.toFixed(2)}`;
+  if (totalSpentEl) totalSpentEl.textContent = `₵${totalSpent.toFixed(2)}`;
   if (ordersCountEl) ordersCountEl.textContent = ordersCount;
-  if (avgOrderEl) avgOrderEl.textContent = `$${avgOrder.toFixed(2)}`;
+  if (avgOrderEl) avgOrderEl.textContent = `₵${avgOrder.toFixed(2)}`;
 }
 
 function renderCategoryPieChart() {
@@ -568,7 +568,7 @@ function renderMonthlyBarChart() {
     // Add value label
     const valueLabel = document.createElement('div');
     valueLabel.className = 'bar-value';
-    valueLabel.textContent = `$${month.amount.toFixed(0)}`;
+    valueLabel.textContent = `₵${month.amount.toFixed(0)}`;
     bar.appendChild(valueLabel);
     
     barContainer.appendChild(bar);
@@ -608,7 +608,7 @@ function renderTransactionsTable() {
     
     // Total cell
     const totalCell = document.createElement('td');
-    totalCell.textContent = `$${transaction.total.toFixed(2)}`;
+    totalCell.textContent = `₵${transaction.total.toFixed(2)}`;
     totalCell.style.textAlign = 'right';
     row.appendChild(totalCell);
     

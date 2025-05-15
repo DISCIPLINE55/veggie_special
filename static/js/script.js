@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
     card.dataset.id = product.id;
     
     const priceDisplay = product.sale 
-        ? `<span class="price-sale">$${product.salePrice.toFixed(2)}</span>
-           <span class="price-original">$${product.price.toFixed(2)}</span>` 
-        : `<span class="price">$${product.price.toFixed(2)}</span>`;
+        ? `<span class="price-sale">₵${product.salePrice.toFixed(2)}</span>
+           <span class="price-original">₵${product.price.toFixed(2)}</span>` 
+        : `<span class="price">₵${product.price.toFixed(2)}</span>`;
     
     const organicBadge = product.organic 
         ? '<span class="product-badge organic">Organic</span>' 
@@ -291,8 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateCart() {
     // Calculations
     cart.subtotal = cart.items.reduce((total, item) => total + (item.price * item.quantity), 0);
-    cart.delivery = cart.subtotal > 50 ? 0 : 4.99;
-    cart.tax = cart.subtotal * 0.08; // 8% tax rate
+    cart.delivery = cart.subtotal > 500 ? 0 : 20;
+    cart.tax = cart.subtotal * 0.035; 
     cart.total = cart.subtotal + cart.delivery + cart.tax;
     
     // Update cart counter
@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="cart-item-image" style="background-image: url(${item.image})"></div>
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>
-                    <div class="cart-item-price">$${item.price.toFixed(2)} / ${item.unit}</div>
+                    <div class="cart-item-price">₵${item.price.toFixed(2)} / ${item.unit}</div>
                     <div class="cart-item-controls">
                         <div class="quantity-control small">
                             <button class="quantity-btn minus" data-id="${item.id}">-</button>
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="remove-item" data-id="${item.id}">Remove</button>
                     </div>
                 </div>
-                <div class="cart-item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                <div class="cart-item-total">₵${(item.price * item.quantity).toFixed(2)}</div>
             `;
             cartItemsContainer.appendChild(itemElement);
         });
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
         itemElement.className = 'summary-item';
         itemElement.innerHTML = `
             <div class="summary-item-name">${item.name} <span class="summary-item-quantity">x${item.quantity}</span></div>
-            <div class="summary-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+            <div class="summary-item-price">₵${(item.price * item.quantity).toFixed(2)}</div>
         `;
         summaryItemsContainer.appendChild(itemElement);
     });
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
           itemElement.className = 'receipt-item';
           itemElement.innerHTML = `
               <div class="receipt-item-name">${item.name} <span class="receipt-item-quantity">x${item.quantity}</span></div>
-              <div class="receipt-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+              <div class="receipt-item-price">₵${(item.price * item.quantity).toFixed(2)}</div>
           `;
           receiptItemsList.appendChild(itemElement);
       });
@@ -1307,8 +1307,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateCart() {
   // Calculations with proper precision
   cart.subtotal = parseFloat(cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2));
-  cart.delivery = cart.subtotal > 50 ? 0 : 4.99;
-  cart.tax = parseFloat((cart.subtotal * 0.08).toFixed(2)); // 8% tax rate with proper rounding
+  cart.delivery = cart.subtotal > 500 ? 0 : 20;
+  cart.tax = parseFloat((cart.subtotal * 0.035).toFixed(2)); // 3.5% VAT rate with proper rounding
   cart.total = parseFloat((cart.subtotal + cart.delivery + cart.tax).toFixed(2));
   
   // Apply any active coupon discount
@@ -1362,7 +1362,7 @@ function updateCart() {
           <div class="cart-item-image" style="background-image: url(${item.image})"></div>
           <div class="cart-item-details">
               <h4 class="cart-item-name">${item.name}</h4>
-              <div class="cart-item-price">$${item.price.toFixed(2)} / ${item.unit}</div>
+              <div class="cart-item-price">₵${item.price.toFixed(2)} / ${item.unit}</div>
               <div class="cart-item-controls">
                   <div class="quantity-control small">
                       <button class="quantity-btn minus" data-id="${item.id}">-</button>
@@ -1372,7 +1372,7 @@ function updateCart() {
                   <button class="remove-item" data-id="${item.id}">Remove</button>
               </div>
           </div>
-          <div class="cart-item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+          <div class="cart-item-total">₵${(item.price * item.quantity).toFixed(2)}</div>
       `;
       cartItemsContainer.appendChild(itemElement);
     });
@@ -1393,7 +1393,7 @@ function updateCart() {
   // Display coupon discount if applicable
   if (couponDiscountElement) {
     if (cart.couponDiscount > 0) {
-      couponDiscountElement.textContent = `-$${cart.couponDiscount.toFixed(2)}`;
+      couponDiscountElement.textContent = `-${cart.couponDiscount.toFixed(2)}`;
       couponDiscountElement.parentElement.style.display = 'flex';
     } else {
       couponDiscountElement.parentElement.style.display = 'none';
@@ -1429,7 +1429,7 @@ function initializeCouponSystem() {
         <div id="coupon-message" class="coupon-message"></div>
         <div class="cart-total-row coupon-discount-row" style="display: none;">
           <span>Discount:</span>
-          <span id="coupon-discount">-$0.00</span>
+          <span id="coupon-discount">-₵0.00</span>
         </div>
       `;
       
@@ -1486,7 +1486,7 @@ function applyCoupon() {
     'FRESH10': { type: 'percentage', value: 0.10, message: '10% discount applied!' },
     'SAVE20': { type: 'percentage', value: 0.20, message: '20% discount applied!' },
     'FREESHIP': { type: 'shipping', value: 0, message: 'Free shipping applied!' },
-    'DISCOUNT5': { type: 'fixed', value: 5, message: '$5 discount applied!' }
+    'DISCOUNT5': { type: 'fixed', value: 15, message: '₵15 discount applied!' }
   };
   
   if (couponCode === '') {

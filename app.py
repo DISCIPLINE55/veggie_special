@@ -646,8 +646,8 @@ def create_order():
     
     # Calculate order totals
     subtotal = sum(item.product.price * item.quantity for item in cart.items)
-    delivery_fee = 0.0 if data.get('delivery_method') == 'standard' else 4.99
-    tax = subtotal * 0.05  # 5% tax rate
+    delivery_fee = 0.0 if data.get('delivery_method') == 'standard' else 30
+    tax = subtotal * 0.035  # 3.5 VAT rate
     total = subtotal + delivery_fee + tax
     
     # Format address
@@ -1415,12 +1415,12 @@ def create_tables():
             
             # Add sample products
             products = [
-                Product(name='Organic Tomatoes', description='Juicy, locally grown organic tomatoes', price=3.99, stock=50, image_url='images/products/tomatoes.jpg', category_id=1, is_organic=True, unit='kg'),
-                Product(name='Fresh Spinach', description='Nutrient-rich spinach leaves', price=2.49, stock=30, image_url='images/products/spinach.jpg', category_id=1, is_organic=True, is_featured=True, unit='bundle'),
-                Product(name='Ripe Bananas', description='Sweet and energy-packed bananas', price=1.99, stock=100, image_url='images/products/bananas.jpg', category_id=2, unit='kg'),
-                Product(name='Organic Apples', description='Crisp and sweet organic apples', price=4.99, stock=80, image_url='images/products/apples.jpg', category_id=2, is_organic=True, is_featured=True, unit='kg'),
-                Product(name='Fresh Basil', description='Aromatic basil, perfect for pasta and salads', price=1.99, stock=20, image_url='images/products/basil.jpg', category_id=3, is_organic=True, unit='bundle'),
-                Product(name='Sweet Potatoes', description='Versatile and nutritious sweet potatoes', price=2.99, stock=40, image_url='images/products/sweet_potatoes.jpg', category_id=4, is_featured=True, unit='kg')
+                Product(name='Organic Tomatoes', description='Juicy, locally grown organic tomatoes', price=51.87, stock=50, image_url='images/products/tomatoes.jpg', category_id=1, is_organic=True, unit='kg'),
+                Product(name='Fresh Spinach', description='Nutrient-rich spinach leaves', price=32.37, stock=30, image_url='images/products/spinach.jpg', category_id=1, is_organic=True, is_featured=True, unit='bundle'),
+                Product(name='Ripe Bananas', description='Sweet and energy-packed bananas', price=25.87, stock=100, image_url='images/products/bananas.jpg', category_id=2, unit='kg'),
+                Product(name='Organic Apples', description='Crisp and sweet organic apples', price=64.87, stock=80, image_url='images/products/apples.jpg', category_id=2, is_organic=True, is_featured=True, unit='kg'),
+                Product(name='Fresh Basil', description='Aromatic basil, perfect for pasta and salads', price=25.87, stock=20, image_url='images/products/basil.jpg', category_id=3, is_organic=True, unit='bundle'),
+                Product(name='Sweet Potatoes', description='Versatile and nutritious sweet potatoes', price=38.87, stock=40, image_url='images/products/sweet_potatoes.jpg', category_id=4, is_featured=True, unit='kg')
             ]
             db.session.add_all(products)
             db.session.commit()
