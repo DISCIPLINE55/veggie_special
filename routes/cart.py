@@ -9,8 +9,9 @@ cart_routes = Blueprint('cart_routes', __name__)
 def calculate_cart_totals(cart_items):
     """Calculate cart totals including subtotal, delivery, tax, and total"""
     subtotal = sum(item['price'] * item['quantity'] for item in cart_items)
-    delivery = 0 if subtotal >= 50 else 4.99  # Free delivery over $50
-    tax = subtotal * 0.07  # Assuming 7% tax
+    delivery = 0 if subtotal >= 500 else 20  # Free delivery over GH20
+    tax = subtotal * 0.035  # Assuming 3.5% VAT
+
     total = subtotal + delivery + tax
     
     return {
@@ -186,7 +187,7 @@ def apply_promo():
         "WELCOME10": {"type": "percent", "value": 10},
         "FREESHIP": {"type": "free_shipping", "value": 0},
         "SAVE20": {"type": "percent", "value": 20},
-        "5DOLLARS": {"type": "fixed", "value": 5}
+        "5OFF": {"type": "fixed", "value": 5}
     }
     
     if promo_code not in promo_codes:
@@ -285,7 +286,7 @@ def checkout():
     # Apply delivery method cost
     if data.get('deliveryMethod') == 'express':
         # Add express delivery fee
-        express_fee = 4.99
+        express_fee = 30
         totals["delivery"] = round(express_fee, 2)
         totals["total"] = round(totals["total"] + express_fee, 2)
     

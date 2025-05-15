@@ -512,3 +512,15 @@ const products = [
 ];
 
 
+const USD_TO_GHS = 13;
+
+const productsInCedis = products.map(product => {
+  const updatedProduct = { ...product };
+  updatedProduct.price = parseFloat((product.price * USD_TO_GHS).toFixed(2));
+
+  if (product.sale && product.salePrice) {
+    updatedProduct.salePrice = parseFloat((product.salePrice * USD_TO_GHS).toFixed(2));
+  }
+
+  return updatedProduct;
+});
